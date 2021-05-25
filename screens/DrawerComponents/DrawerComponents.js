@@ -50,8 +50,25 @@ const HomeStackScreen = ({ navigation }) => (
             name="notifications-outline"
             size={25}
             backgroundColor="#009387"
+            onPress={() => { navigation.navigate('Notification')
+              
+            }}
+          ></Icon.Button>
+        ),
+      }}
+    />
+    <HomeStack.Screen
+      name="Notification"
+      component={NotificationScreen}
+      options={{
+        title: "Notifications",
+        headerLeft: () => (
+          <Icon.Button
+            name="chevron-back-outline"
+            size={25}
+            backgroundColor="#009387"
             onPress={() => {
-              NotificationScreen;
+              navigation.goBack();
             }}
           ></Icon.Button>
         ),
