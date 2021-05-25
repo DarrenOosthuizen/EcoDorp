@@ -64,11 +64,26 @@ const LoginScreen = ({ navigation }) => {
         isValidPassword: false,
       });
     }
+    const currentpassword = data.confirmpassword;
+    if (currentpassword.trim().length >= 1) {
+      if (val == currentpassword) {
+        setData({
+          ...data,
+          password: val,
+          isMatchingPassword: true,
+        });
+      } else {
+        setData({
+          ...data,
+          password: val,
+          isMatchingPassword: false,
+        });
+      }
+    }
   };
 
-
   const handleConfirmPasswordChange = (val) => {
-      const currentpassword = data.password
+    const currentpassword = data.password;
     if (val == currentpassword) {
       setData({
         ...data,
@@ -238,8 +253,6 @@ const LoginScreen = ({ navigation }) => {
           </Animatable.View>
         )}
 
-
-
         <Text
           style={[
             styles.text_footer,
@@ -276,14 +289,9 @@ const LoginScreen = ({ navigation }) => {
         </View>
         {data.isMatchingPassword ? null : (
           <Animatable.View animation="fadeInLeft" duration={500}>
-            <Text style={styles.errorMsg}>
-              Passwords not matching.
-            </Text>
+            <Text style={styles.errorMsg}>Passwords not matching.</Text>
           </Animatable.View>
         )}
-
-
-
 
         <TouchableOpacity>
           <Text style={{ color: "#068527", marginTop: 15 }}>
@@ -315,18 +323,20 @@ const LoginScreen = ({ navigation }) => {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => {navigation.goBack() 
-                setData({
-                    username: "",
-                    password: "",
-                    confirmpassword: "",
-                    check_textInputChange: false,
-                    secureTextEntry: true,
-                    confirmsecureTextEntry: true,
-                    isValidUser: true,
-                    isValidPassword: true,
-                    isMatchingPassword: true,
-                  })}}
+            onPress={() => {
+              navigation.goBack();
+              setData({
+                username: "",
+                password: "",
+                confirmpassword: "",
+                check_textInputChange: false,
+                secureTextEntry: true,
+                confirmsecureTextEntry: true,
+                isValidUser: true,
+                isValidPassword: true,
+                isMatchingPassword: true,
+              });
+            }}
             style={[
               styles.signIn,
               {
