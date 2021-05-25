@@ -21,7 +21,7 @@ const SplashScreen = ({navigation}) => {
         <Animatable.Image
         animation = "pulse"
         easing="ease-out" iterationCount="infinite"
-          source={require("../assets/BlockLogo.png")}
+          source={require("../../assets/BlockLogo.png")}
           style={styles.logo}
           resizeMode="stretch"
         />

@@ -158,7 +158,7 @@ const LoginScreen = ({ navigation }) => {
           animation="pulse"
           easing="ease-out"
           iterationCount="infinite"
-          source={require("../assets/SmallLogo.png")}
+          source={require("../../assets/SmallLogo.png")}
           style={styles.logo}
           resizeMode="stretch"
         />
