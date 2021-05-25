@@ -16,6 +16,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Feather from "react-native-vector-icons/Feather";
 
 import { useTheme } from "react-native-paper";
+import {AuthContext} from "../../components/context";
 
 const LoginScreen = ({ navigation }) => {
   const [data, setData] = React.useState({
@@ -26,6 +27,8 @@ const LoginScreen = ({ navigation }) => {
     isValidUser: true,
     isValidPassword: true,
   });
+
+  const {signIn} = React.useContext(AuthContext);
 
   const { colors } = useTheme();
 
@@ -84,27 +87,8 @@ const LoginScreen = ({ navigation }) => {
     }
   };
 
-  const loginHandle = (userName, password) => {
-    const foundUser = Users.filter((item) => {
-      return userName == item.username && password == item.password;
-    });
-
-    if (data.username.length == 0 || data.password.length == 0) {
-      Alert.alert(
-        "Wrong Input!",
-        "Username or password field cannot be empty.",
-        [{ text: "Okay" }]
-      );
-      return;
-    }
-
-    if (foundUser.length == 0) {
-      Alert.alert("Invalid User!", "Username or password is incorrect.", [
-        { text: "Okay" },
-      ]);
-      return;
-    }
-    signIn(foundUser);
+  const loginHandle = (username, password) => {
+    signIn(username,password);
   };
 
   return (
@@ -221,8 +205,7 @@ const LoginScreen = ({ navigation }) => {
           <TouchableOpacity
             style={styles.signIn}
             onPress={() => {
-              loginHandle(data.username, data.password);
-            }}
+              loginHandle(data.username,data.password)}}
           >
             <LinearGradient
               colors={["#166d3b", "#166d3b"]}
