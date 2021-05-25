@@ -1,8 +1,8 @@
 import "react-native-gesture-handler";
 import * as React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { createDrawerNavigator } from "@react-navigation/drawer";
 import Icon from "react-native-vector-icons/Ionicons";
+import { StyleSheet, Text, View } from "react-native";
 
 import HomeScreen from "../../screens/MainScreens/HomeScreen";
 import SettingScreen from "../../screens/MainScreens/SettingScreen";
@@ -13,17 +13,15 @@ import RoomLayoutScreen from "../../screens/MainScreens/RoomLayoutScreen";
 import PredictionScreen from "../../screens/MainScreens/PredictionScreen";
 
 const HomeStack = createStackNavigator();
-const SettingsStack = createStackNavigator();
-const MonitorStack = createStackNavigator();
-const ManageStack = createStackNavigator();
-const RoomLayoutStack = createStackNavigator();
-const PredictionStack = createStackNavigator();
-const NotificationStack = createStackNavigator();
+
+const COLORS = {
+  Green: "#068527",
+};
 
 const HomeStackScreen = ({ navigation }) => (
   <HomeStack.Navigator
     screenOptions={{
-      headerStyle: { backgroundColor: "#009387" },
+      headerStyle: { backgroundColor: COLORS.Green },
       headerTintColor: "#fff",
       headerTitleStyle: {
         fontWeight: "bold",
@@ -31,7 +29,7 @@ const HomeStackScreen = ({ navigation }) => (
     }}
   >
     <HomeStack.Screen
-      name="Home"
+      name="HomeSec"
       component={HomeScreen}
       options={{
         title: "Home Page",
@@ -39,7 +37,7 @@ const HomeStackScreen = ({ navigation }) => (
           <Icon.Button
             name="ios-menu"
             size={25}
-            backgroundColor="#009387"
+            backgroundColor={COLORS.Green}
             onPress={() => {
               navigation.openDrawer();
             }}
@@ -49,9 +47,9 @@ const HomeStackScreen = ({ navigation }) => (
           <Icon.Button
             name="notifications-outline"
             size={25}
-            backgroundColor="#009387"
-            onPress={() => { navigation.navigate('Notification')
-              
+            backgroundColor={COLORS.Green}
+            onPress={() => {
+              navigation.navigate("Notification");
             }}
           ></Icon.Button>
         ),
@@ -66,28 +64,15 @@ const HomeStackScreen = ({ navigation }) => (
           <Icon.Button
             name="chevron-back-outline"
             size={25}
-            backgroundColor="#009387"
+            backgroundColor={COLORS.Green}
             onPress={() => {
-              navigation.goBack();
+              navigation.navigate("HomeSec");
             }}
-          ></Icon.Button>
+          />
         ),
       }}
     />
-  </HomeStack.Navigator>
-);
-
-const SettingsStackScreen = ({ navigation }) => (
-  <SettingsStack.Navigator
-    screenOptions={{
-      headerStyle: { backgroundColor: "#009387" },
-      headerTintColor: "#fff",
-      headerTitleStyle: {
-        fontWeight: "bold",
-      },
-    }}
-  >
-    <SettingsStack.Screen
+    <HomeStack.Screen
       name="Settings"
       component={SettingScreen}
       options={{
@@ -96,7 +81,7 @@ const SettingsStackScreen = ({ navigation }) => (
           <Icon.Button
             name="ios-menu"
             size={25}
-            backgroundColor="#009387"
+            backgroundColor={COLORS.Green}
             onPress={() => {
               navigation.openDrawer();
             }}
@@ -104,50 +89,7 @@ const SettingsStackScreen = ({ navigation }) => (
         ),
       }}
     />
-  </SettingsStack.Navigator>
-);
-
-const MonitorStackScreen = ({ navigation }) => (
-  <MonitorStack.Navigator
-    screenOptions={{
-      headerStyle: { backgroundColor: "#009387" },
-      headerTintColor: "#fff",
-      headerTitleStyle: {
-        fontWeight: "bold",
-      },
-    }}
-  >
-    <MonitorStack.Screen
-      name="Monitor"
-      component={MonitorScreen}
-      options={{
-        title: "Monitor",
-        headerLeft: () => (
-          <Icon.Button
-            name="ios-menu"
-            size={25}
-            backgroundColor="#009387"
-            onPress={() => {
-              navigation.openDrawer();
-            }}
-          ></Icon.Button>
-        ),
-      }}
-    />
-  </MonitorStack.Navigator>
-);
-
-const ManageStackScreen = ({ navigation }) => (
-  <ManageStack.Navigator
-    screenOptions={{
-      headerStyle: { backgroundColor: "#009387" },
-      headerTintColor: "#fff",
-      headerTitleStyle: {
-        fontWeight: "bold",
-      },
-    }}
-  >
-    <ManageStack.Screen
+    <HomeStack.Screen
       name="Manage"
       component={ManageScreen}
       options={{
@@ -156,7 +98,7 @@ const ManageStackScreen = ({ navigation }) => (
           <Icon.Button
             name="ios-menu"
             size={25}
-            backgroundColor="#009387"
+            backgroundColor={COLORS.Green}
             onPress={() => {
               navigation.openDrawer();
             }}
@@ -164,50 +106,7 @@ const ManageStackScreen = ({ navigation }) => (
         ),
       }}
     />
-  </ManageStack.Navigator>
-);
-
-const RoomLayoutStackScreen = ({ navigation }) => (
-  <RoomLayoutStack.Navigator
-    screenOptions={{
-      headerStyle: { backgroundColor: "#009387" },
-      headerTintColor: "#fff",
-      headerTitleStyle: {
-        fontWeight: "bold",
-      },
-    }}
-  >
-    <RoomLayoutStack.Screen
-      name="RoomLayout"
-      component={RoomLayoutScreen}
-      options={{
-        title: "Room Layout",
-        headerLeft: () => (
-          <Icon.Button
-            name="ios-menu"
-            size={25}
-            backgroundColor="#009387"
-            onPress={() => {
-              navigation.openDrawer();
-            }}
-          ></Icon.Button>
-        ),
-      }}
-    />
-  </RoomLayoutStack.Navigator>
-);
-
-const PredictionStackScreen = ({ navigation }) => (
-  <PredictionStack.Navigator
-    screenOptions={{
-      headerStyle: { backgroundColor: "#009387" },
-      headerTintColor: "#fff",
-      headerTitleStyle: {
-        fontWeight: "bold",
-      },
-    }}
-  >
-    <PredictionStack.Screen
+    <HomeStack.Screen
       name="Prediction"
       component={PredictionScreen}
       options={{
@@ -216,7 +115,7 @@ const PredictionStackScreen = ({ navigation }) => (
           <Icon.Button
             name="ios-menu"
             size={25}
-            backgroundColor="#009387"
+            backgroundColor={COLORS.Green}
             onPress={() => {
               navigation.openDrawer();
             }}
@@ -224,44 +123,56 @@ const PredictionStackScreen = ({ navigation }) => (
         ),
       }}
     />
-  </PredictionStack.Navigator>
-);
-
-const NotificationStackScreen = ({ navigation }) => (
-  <NotificationStack.Navigator
-    screenOptions={{
-      headerStyle: { backgroundColor: "#009387" },
-      headerTintColor: "#fff",
-      headerTitleStyle: {
-        fontWeight: "bold",
-      },
-    }}
-  >
-    <NotificationStack.Screen
-      name="Notifications"
-      component={NotificationScreen}
+    <HomeStack.Screen
+      name="RoomLayout"
+      component={RoomLayoutScreen}
       options={{
-        title: "Notifications",
+        title: "Room Layout",
         headerLeft: () => (
           <Icon.Button
             name="ios-menu"
             size={25}
-            backgroundColor="#009387"
+            backgroundColor={COLORS.Green}
             onPress={() => {
-              navigation.goBack();
+              navigation.openDrawer();
             }}
           ></Icon.Button>
         ),
       }}
     />
-  </NotificationStack.Navigator>
+    <HomeStack.Screen
+      name="Monitor"
+      component={MonitorScreen}
+      options={{
+        title: "Monitor Results",
+        headerLeft: () => (
+          <Icon.Button
+            name="ios-menu"
+            size={25}
+            backgroundColor={COLORS.Green}
+            onPress={() => {
+              navigation.openDrawer();
+            }}
+          ></Icon.Button>
+        ),
+      }}
+    />
+  </HomeStack.Navigator>
 );
 
-export  {
-  HomeStackScreen,
-  ManageStackScreen,
-  MonitorStackScreen,
-  PredictionStackScreen,
-  RoomLayoutStackScreen,
-  SettingsStackScreen,
-};
+export { HomeStackScreen };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  nottext: {
+    color: "#fff",
+    fontWeight: "bold",
+    display: "flex",
+    marginRight: "20%",
+    justifyContent: "center",
+  },
+});
