@@ -12,8 +12,12 @@ import {
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Animatable from 'react-native-animatable';
+import {useTheme} from '@react-navigation/native';
 
 const SplashScreen = ({navigation}) => {
+  const {colors} = useTheme();
+
+  const theme = useTheme();
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="#009387" barStyle="light-content" />
@@ -26,7 +30,7 @@ const SplashScreen = ({navigation}) => {
           resizeMode="stretch"
         />
       </View>
-      <Animatable.View style={styles.footer}
+      <Animatable.View style={[styles.footer,{backgroundColor: colors.splashbackground}]}
       animation="fadeInUpBig">
         <Text style={styles.title}>
           Stay connected with your BestFriend!
