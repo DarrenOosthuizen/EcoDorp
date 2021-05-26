@@ -1,4 +1,5 @@
 import "react-native-gesture-handler";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect } from "react";
 import {
   NavigationContainer,
@@ -15,7 +16,6 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import RootStackScreen from "./screens/AuthenticationScreens/RootStackScreen";
-import AsynceStorage from "@react-native-community/async-storage";
 import {
   HomeStackScreen,
   MonitorStackScreen,
@@ -108,7 +108,7 @@ const App = () => {
         if (userName == "Admin" && password == "Admin") {
           userToken = "thisiswhatscalledarandomtokenforthememe";
           try {
-            await AsynceStorage.setItem("userToken", userToken);
+            await AsyncStorage.setItem("userToken", userToken);
           } catch (e) {
             console.log(e);
           }
@@ -117,7 +117,7 @@ const App = () => {
       },
       signOut: async () => {
         try {
-          await AsynceStorage.removeItem("userToken");
+          await AsyncStorage.removeItem("userToken");
         } catch (e) {
           console.log(e);
         }
@@ -139,7 +139,7 @@ const App = () => {
       let userToken;
       userToken = null;
       try {
-        userToken = await AsynceStorage.getItem("userToken");
+        userToken = await AsyncStorage.getItem("userToken");
       } catch (e) {
         console.log(e);
       }
