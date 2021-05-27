@@ -11,11 +11,11 @@ import {
 
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { LinearGradient } from "expo-linear-gradient";
-import * as Animatable from 'react-native-animatable';
-import {useTheme} from '@react-navigation/native';
+import * as Animatable from "react-native-animatable";
+import { useTheme } from "@react-navigation/native";
 
-const SplashScreen = ({navigation}) => {
-  const {colors} = useTheme();
+const SplashScreen = ({ navigation }) => {
+  const { colors } = useTheme();
 
   const theme = useTheme();
   return (
@@ -23,29 +23,28 @@ const SplashScreen = ({navigation}) => {
       <StatusBar backgroundColor="#009387" barStyle="light-content" />
       <View style={styles.header}>
         <Animatable.Image
-        animation = "pulse"
-        easing="ease-out" iterationCount="infinite"
+          animation="pulse"
+          easing="ease-out"
+          iterationCount="infinite"
           source={require("../../assets/BlockLogo.png")}
           style={styles.logo}
           resizeMode="stretch"
         />
       </View>
-      <Animatable.View style={[styles.footer,{backgroundColor: colors.splashbackground}]}
-      animation="fadeInUpBig">
-        <Text style={styles.title}>
-          Stay connected with your BestFriend!
-        </Text>
+      <Animatable.View
+        style={[styles.footer, { backgroundColor: colors.splashbackground }]}
+        animation="fadeInUpBig"
+      >
+        <Text style={styles.title}>Stay connected with your BestFriend!</Text>
         <Text style={styles.text}>Sign in with account.</Text>
         <View style={styles.button}>
-          <TouchableOpacity onPress={()=>navigation.navigate('LoginScreen')}>
+          <TouchableOpacity onPress={() => navigation.navigate("LoginScreen")}>
             <LinearGradient
               colors={["#166d3b", "#166d3b"]}
               style={styles.signIn}
             >
               <Text style={styles.textSign}>Login</Text>
-              <MaterialIcons name="navigate-next"
-              color="#fff"
-              size={20}/>
+              <MaterialIcons name="navigate-next" color="#fff" size={20} />
             </LinearGradient>
           </TouchableOpacity>
         </View>
