@@ -7,6 +7,8 @@
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "description": "Mobile Application for EcoDorp",
+    "githubUrl": "https://github.com/DarrenOosthuizen/EcoDorp"
   }
 }
