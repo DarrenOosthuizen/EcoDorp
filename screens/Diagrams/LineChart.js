@@ -7,10 +7,10 @@ const LineChartDiagram = (props) => {
   props.labelheading.forEach((element) => {
     label.push(element);
   });
-
   const datas = [];
   props.datavalue.forEach((element) => {
     datas.push(element);
+
   });
 
   return (
@@ -25,12 +25,12 @@ const LineChartDiagram = (props) => {
             },
           ],
         }}
-        width={Dimensions.get("window").width} // from react-native
+        width={Dimensions.get("window").width * (datas.length/4)} // from react-native
         height={220}
         chartConfig={{
           backgroundColor: "#e26a00",
-          backgroundGradientFrom: "#fb8c00",
-          backgroundGradientTo: "#ffa726",
+          backgroundGradientFrom: "#339966",
+          backgroundGradientTo: "#339966",
           decimalPlaces: 2, // optional, defaults to 2dp
           color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
           style: {
