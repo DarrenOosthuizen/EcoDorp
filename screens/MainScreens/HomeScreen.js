@@ -44,6 +44,7 @@ const HomeScreen = () => {
   return (
     <ScrollView>
       <View style={styles.container} id="test">
+        <ScrollView horizontal={true}>
         <BezierLineChart style={styles.test}
           labelheading={[
             "January",
@@ -58,6 +59,8 @@ const HomeScreen = () => {
           ]}
           datavalue={[10, 20, 15, 20, 30, 50, 20, 30]}
         />
+        </ScrollView>
+        <ScrollView horizontal={true}>
         <LineChart
           labelheading={[
             "January",
@@ -68,9 +71,15 @@ const HomeScreen = () => {
             "June",
             "July",
             "August",
+            "September",
+            "October",
+            "November",
+            "December",
           ]}
-          datavalue={[10, 20, 15, 20, 30, 50, 20, 30]}
+          datavalue={[10, 20, 15, 20, 30, 50, 20, 30, 30, 50, 20, 30]}
         />
+        </ScrollView>
+        <ScrollView horizontal={true}>
         <BarChart
           labelheading={[
             "January",
@@ -84,10 +93,11 @@ const HomeScreen = () => {
           ]}
           datavalue={[0.2, 0.6, 0.5, 0.7, 0.2]}
         />
+        </ScrollView>
+        <ScrollView horizontal={true}>
         <PieChart pieobject={testobject} />
-        <PieChart pieobject={testobject} />
-        <PieChart pieobject={testobject} />
-        <PieChart pieobject={testobject} />
+        </ScrollView>
+
       </View>
     </ScrollView>
   );
