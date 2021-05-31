@@ -5,8 +5,7 @@ import {
   TouchableOpacity,
   Dimensions,
   StyleSheet,
-  StatusBar,
-  Image,
+  StatusBar
 } from "react-native";
 
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -17,7 +16,6 @@ import { useTheme } from "@react-navigation/native";
 const SplashScreen = ({ navigation }) => {
   const { colors } = useTheme();
 
-  const theme = useTheme();
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="#009387" barStyle="light-content" />
