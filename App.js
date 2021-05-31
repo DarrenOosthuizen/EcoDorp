@@ -1,5 +1,5 @@
 import "react-native-gesture-handler";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect } from "react";
 import {
   NavigationContainer,
@@ -11,19 +11,10 @@ import {
   DarkTheme as PaperDarkTheme,
   DefaultTheme as PaperDefaultTheme,
 } from "react-native-paper";
-import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
-import Icon from "react-native-vector-icons/Ionicons";
+import { View, ActivityIndicator } from "react-native";
 import RootStackScreen from "./screens/AuthenticationScreens/RootStackScreen";
-import {
-  HomeStackScreen,
-  MonitorStackScreen,
-  RoomLayoutStackScreen,
-  ManageStackScreen,
-  PredictionStackScreen,
-  SettingsStackScreen,
-} from "./screens/DrawerComponents/DrawerComponents";
+import { HomeStackScreen } from "./screens/DrawerComponents/DrawerComponents";
 import { DrawerContent } from "./screens/DrawerComponents/DrawerContent";
 import { AuthContext } from "./components/context";
 
@@ -31,8 +22,6 @@ const Drawer = createDrawerNavigator();
 
 const App = () => {
   const [isDarkTheme, setIsDarkTheme] = React.useState(false);
-  //const [isLoading, setIsLoading] = React.useState(true);
-  //const [userToken, setUserToken] = React.useState(null);
 
   const initialLoginState = {
     isLoading: true,
@@ -102,18 +91,14 @@ const App = () => {
   );
   const authContext = React.useMemo(
     () => ({
-      signIn: async (userName, password) => {
-        let userToken;
-        userToken = null;
-        if (userName == "Admin" && password == "Admin") {
-          userToken = "thisiswhatscalledarandomtokenforthememe";
-          try {
-            await AsyncStorage.setItem("userToken", userToken);
-          } catch (e) {
-            console.log(e);
-          }
+      signIn: async (userName, logintoken) => {
+        try {
+          await AsyncStorage.setItem("userToken", logintoken);
+        } catch (e) {
+          console.log(e);
         }
-        dispatch({ type: "LOGIN", id: userName, token: userToken });
+
+        dispatch({ type: "LOGIN", id: userName, token: logintoken });
       },
       signOut: async () => {
         try {
@@ -174,12 +159,3 @@ const App = () => {
 };
 
 export default App;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
