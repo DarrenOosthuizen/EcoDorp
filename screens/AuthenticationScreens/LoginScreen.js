@@ -16,7 +16,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Feather from "react-native-vector-icons/Feather";
 
 import { useTheme } from "react-native-paper";
-import {AuthContext} from "../../components/context";
+import { AuthContext } from "../../components/context";
 
 const LoginScreen = ({ navigation }) => {
   const [data, setData] = React.useState({
@@ -28,7 +28,7 @@ const LoginScreen = ({ navigation }) => {
     isValidPassword: true,
   });
 
-  const {signIn} = React.useContext(AuthContext);
+  const { signIn } = React.useContext(AuthContext);
 
   const { colors } = useTheme();
 
@@ -88,8 +88,43 @@ const LoginScreen = ({ navigation }) => {
   };
 
   const loginHandle = (username, password) => {
-    signIn(username,password);
+    signIn(username, password);
   };
+
+  async function login() {
+    let email = data.username;
+    let password = data.password;
+    let item = { email, password };
+    let result = await fetch("http://flystudio.co.za:5000/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(item),
+    });
+    result = await result.json();
+    console.log(result.message);
+    console.log(result.token);
+    if (result.message == "Email or password does not match" && result.token == null) {
+      Alert.alert(
+        "Invalid Login",
+        "Email or Password Incorrect!!",
+        [
+          {
+            text: "Cancel",
+            style: "cancel",
+          },
+          { text: "OK" },
+        ],
+        { cancelable: false }
+      );
+    }
+    if(result.token != null && result.message == null)
+    {
+      signIn(email, result.token);
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -137,7 +172,7 @@ const LoginScreen = ({ navigation }) => {
             autoCapitalize="none"
             onChangeText={(val) => textInputChange(val)}
             onEndEditing={(e) => handleValidUser(e.nativeEvent.text)}
-            value = {data.username}
+            value={data.username}
           />
           {data.check_textInputChange ? (
             <Animatable.View animation="bounceIn">
@@ -178,7 +213,7 @@ const LoginScreen = ({ navigation }) => {
             ]}
             autoCapitalize="none"
             onChangeText={(val) => handlePasswordChange(val)}
-            value = {data.password}
+            value={data.password}
           />
           <TouchableOpacity onPress={updateSecureTextEntry}>
             {data.secureTextEntry ? (
@@ -205,7 +240,8 @@ const LoginScreen = ({ navigation }) => {
           <TouchableOpacity
             style={styles.signIn}
             onPress={() => {
-              loginHandle(data.username,data.password)}}
+              login();
+            }}
           >
             <LinearGradient
               colors={["#166d3b", "#166d3b"]}
@@ -226,15 +262,15 @@ const LoginScreen = ({ navigation }) => {
 
           <TouchableOpacity
             onPress={() => {
-            navigation.navigate("RegisterScreen")
-            setData({
+              navigation.navigate("RegisterScreen");
+              setData({
                 username: "",
                 password: "",
                 check_textInputChange: false,
                 secureTextEntry: true,
                 isValidUser: true,
                 isValidPassword: true,
-              })
+              });
             }}
             style={[
               styles.signIn,
