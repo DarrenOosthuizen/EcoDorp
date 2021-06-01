@@ -1,6 +1,7 @@
 {
   "name": "EcoDorp",
   "displayName": "EcoDorp",
+  "icon": "./assets/logo.png",
   "expo": {
     "name": "EcoDorp",
     "slug": "EcoDorp",
