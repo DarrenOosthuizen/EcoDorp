@@ -24,14 +24,24 @@ const App = () => {
   const [isDarkTheme, setIsDarkTheme] = React.useState(false);
 
 
-  const readData = async () => {
+  const readThemeData = async () => {
     try {
-      const userTheme = await AsyncStorage.getItem('userTheme')
-  
-      alert(userTheme)
+      const userTheme = await AsyncStorage.getItem('userTheme') 
+      alert(userTheme.toString())
     } catch (e) {
       alert('Failed to fetch the data from storage')
     }
+    
+  }
+
+  const setThemeData = async () => {
+    const value1 = !isDarkTheme
+    try {
+      await AsyncStorage.setItem('userTheme', value1.toString())
+    } catch (e) {
+      alert('Failed to fetch the data from storage')
+    }
+    
   }
 
   const initialLoginState = {
@@ -40,6 +50,7 @@ const App = () => {
     userToken: null,
   };
   const CustomerDefaultTheme = {
+    
     ...DefaultTheme,
     ...PaperDefaultTheme,
     colors: {
@@ -123,9 +134,8 @@ const App = () => {
         setIsLoading(false);
       },
       toggleTheme: () => {
-        console.log(isDarkTheme);
-        setIsDarkTheme((isDarkTheme) => !isDarkTheme);
-        console.log(!isDarkTheme);
+        setIsDarkTheme(isDarkTheme => !isDarkTheme);
+        console.log(isDarkTheme)
       },
     }),
     []
