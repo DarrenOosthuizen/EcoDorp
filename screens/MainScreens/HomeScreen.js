@@ -1,15 +1,30 @@
 import React from "react";
-import { View, Text, Button, StyleSheet, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  Button,
+  StyleSheet,
+  ScrollView,
+  Alert,
+} from "react-native";
 import BezierLineChart from "../Diagrams/BezierLineChart";
 import LineChart from "../Diagrams/LineChart";
 import BarChart from "../Diagrams/BarChart";
 import PieChart from "../Diagrams/PieChart";
-
-
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const HomeScreen = () => {
+  const readData = async () => {
+    try {
+      const userToken = await AsyncStorage.getItem('userToken')
+  
+      alert(userToken)
+    } catch (e) {
+      alert('Failed to fetch the data from storage')
+    }
+  }
 
+  readData();
   const testobject = [
     {
       name: "Random Info",
@@ -42,62 +57,62 @@ const HomeScreen = () => {
   ];
 
   return (
+    
     <ScrollView>
       <View style={styles.container} id="test">
         <ScrollView horizontal={true}>
-        <BezierLineChart style={styles.test}
-          labelheading={[
-            "January",
-            "February",
-            "March",
-            "April",
-            "May",
-            "June",
-            "July",
-            "August",
-            
-          ]}
-          datavalue={[10, 20, 15, 20, 30, 50, 20, 30]}
-        />
+          <BezierLineChart
+            style={styles.test}
+            labelheading={[
+              "January",
+              "February",
+              "March",
+              "April",
+              "May",
+              "June",
+              "July",
+              "August",
+            ]}
+            datavalue={[10, 20, 15, 20, 30, 50, 20, 30]}
+          />
         </ScrollView>
         <ScrollView horizontal={true}>
-        <LineChart
-          labelheading={[
-            "January",
-            "February",
-            "March",
-            "April",
-            "May",
-            "June",
-            "July",
-            "August",
-            "September",
-            "October",
-            "November",
-            "December",
-          ]}
-          datavalue={[10, 20, 15, 20, 30, 50, 20, 30, 30, 50, 20, 30]}
-        />
+          <LineChart
+            labelheading={[
+              "January",
+              "February",
+              "March",
+              "April",
+              "May",
+              "June",
+              "July",
+              "August",
+              "September",
+              "October",
+              "November",
+              "December",
+            ]}
+            datavalue={[10, 20, 15, 20, 30, 50, 20, 30, 30, 50, 20, 30]}
+          />
         </ScrollView>
         <ScrollView horizontal={true}>
-        <BarChart
-          labelheading={[
-            "January",
-            "February",
-            "March",
-            "April",
-            "May",
-            "June",
-            "July",
-            "August",
-          ]}
-          datavalue={[0.2, 0.6, 0.5, 0.7, 0.2]}
-        />
+          <BarChart
+            labelheading={[
+              "January",
+              "February",
+              "March",
+              "April",
+              "May",
+              "June",
+              "July",
+              "August",
+            ]}
+            datavalue={[0.2, 0.6, 0.5, 0.7, 0.2]}
+          />
         </ScrollView>
         <ScrollView horizontal={true}>
-        <PieChart pieobject={testobject} />
+          <PieChart pieobject={testobject} />
         </ScrollView>
-
       </View>
     </ScrollView>
   );
@@ -110,7 +125,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    marginLeft : '5%',
-    marginRight : '5%',
+    marginLeft: "5%",
+    marginRight: "5%",
   },
 });
