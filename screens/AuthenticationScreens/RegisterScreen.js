@@ -108,6 +108,14 @@ const LoginScreen = ({ navigation }) => {
         isValidPassword: false,
       });
     }
+    if(val==null || val=="")
+    {
+      setData({
+        ...data,
+        password: val,
+        isValidPassword: true,
+      });
+    }
     const currentpassword = data.confirmpassword;
     if (currentpassword.trim().length >= 1) {
       if (val == currentpassword) {
@@ -124,6 +132,8 @@ const LoginScreen = ({ navigation }) => {
         });
       }
     }
+    
+
   };
 
   const handleConfirmPasswordChange = (val) => {
@@ -139,6 +149,14 @@ const LoginScreen = ({ navigation }) => {
         ...data,
         confirmpassword: val,
         isMatchingPassword: false,
+      });
+    }
+    if(val==null || val=="")
+    {
+      setData({
+        ...data,
+        confirmpassword: val,
+        isMatchingPassword: true,
       });
     }
   };
