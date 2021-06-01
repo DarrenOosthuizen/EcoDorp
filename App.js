@@ -23,6 +23,17 @@ const Drawer = createDrawerNavigator();
 const App = () => {
   const [isDarkTheme, setIsDarkTheme] = React.useState(false);
 
+
+  const readData = async () => {
+    try {
+      const userTheme = await AsyncStorage.getItem('userTheme')
+  
+      alert(userTheme)
+    } catch (e) {
+      alert('Failed to fetch the data from storage')
+    }
+  }
+
   const initialLoginState = {
     isLoading: true,
     userName: null,
@@ -112,7 +123,9 @@ const App = () => {
         setIsLoading(false);
       },
       toggleTheme: () => {
+        console.log(isDarkTheme);
         setIsDarkTheme((isDarkTheme) => !isDarkTheme);
+        console.log(!isDarkTheme);
       },
     }),
     []
