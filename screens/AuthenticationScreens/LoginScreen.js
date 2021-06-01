@@ -18,15 +18,23 @@ import Feather from "react-native-vector-icons/Feather";
 import { useTheme } from "react-native-paper";
 import { AuthContext } from "../../components/context";
 
-const LoginScreen = ({ navigation }) => {
+const LoginScreen = ({ route, navigation }) => {
   const [data, setData] = React.useState({
-    username: "",
+    emailaddress: "",
     password: "",
     check_textInputChange: false,
     secureTextEntry: true,
     isValidUser: true,
     isValidPassword: true,
   });
+
+  try {
+    let { emailAddress, passWord } = route.params;
+    console.log(emailAddress);
+    console.log(passWord);
+    data.emailaddress = emailAddress;
+    data.password = passWord;
+  } catch {}
 
   const { signIn } = React.useContext(AuthContext);
 
@@ -36,16 +44,24 @@ const LoginScreen = ({ navigation }) => {
     if (val.trim().length >= 4) {
       setData({
         ...data,
-        username: val,
+        emailaddress: val,
         check_textInputChange: true,
         isValidUser: true,
       });
     } else {
       setData({
         ...data,
-        username: val,
+        emailaddress: val,
         check_textInputChange: false,
         isValidUser: false,
+      });
+    }
+    if (val == null || val == "") {
+      setData({
+        ...data,
+        emailaddress: val,
+        check_textInputChange: false,
+        isValidUser: true,
       });
     }
   };
@@ -62,6 +78,13 @@ const LoginScreen = ({ navigation }) => {
         ...data,
         password: val,
         isValidPassword: false,
+      });
+    }
+    if (val == null || val == "") {
+      setData({
+        ...data,
+        password: val,
+        isValidPassword: true,
       });
     }
   };
@@ -87,24 +110,28 @@ const LoginScreen = ({ navigation }) => {
     }
   };
 
-  const loginHandle = (username, password) => {
-    signIn(username, password);
-  };
-
   async function login() {
-    let email = data.username;
+    let email = data.emailaddress;
     let password = data.password;
     let item = { email, password };
-    let result = await fetch("http://flystudio.co.za:5000/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify(item),
-    });
+    let result = await fetch(
+      "http://ecovillage.vekemansferre.be:5000/auth/login",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(item),
+      }
+    );
     result = await result.json();
-    if (result.message == "Email or password does not match" && result.token == null) {
+    if (
+      ((data.emailaddress = "w"),
+      (data.password = "w"),
+      result.message == "Email or password does not match" &&
+        result.token == null)
+    ) {
       Alert.alert(
         "Invalid Login",
         "Email or Password Incorrect!!",
@@ -118,8 +145,7 @@ const LoginScreen = ({ navigation }) => {
         { cancelable: false }
       );
     }
-    if(result.token != null && result.message == null)
-    {
+    if (result.token != null && result.message == null) {
       signIn(email, result.token);
     }
   }
@@ -169,8 +195,7 @@ const LoginScreen = ({ navigation }) => {
             ]}
             autoCapitalize="none"
             onChangeText={(val) => textInputChange(val)}
-            onEndEditing={(e) => handleValidUser(e.nativeEvent.text)}
-            value={data.username}
+            value={data.emailaddress}
           />
           {data.check_textInputChange ? (
             <Animatable.View animation="bounceIn">
