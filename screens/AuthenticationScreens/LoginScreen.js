@@ -104,8 +104,6 @@ const LoginScreen = ({ navigation }) => {
       body: JSON.stringify(item),
     });
     result = await result.json();
-    console.log(result.message);
-    console.log(result.token);
     if (result.message == "Email or password does not match" && result.token == null) {
       Alert.alert(
         "Invalid Login",
