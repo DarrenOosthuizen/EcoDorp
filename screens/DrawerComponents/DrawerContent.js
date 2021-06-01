@@ -12,15 +12,8 @@ import {
   TouchableRipple,
   Switch,
 } from "react-native-paper";
-import {
-  HomeStackScreen,
-  MonitorStackScreen,
-  RoomLayoutStackScreen,
-  ManageStackScreen,
-  PredictionStackScreen,
-  SettingsStackScreen,
-} from "./DrawerComponents";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import Icon from "react-native-vector-icons/Ionicons";
 import { AuthContext } from "../../components/context";
 
