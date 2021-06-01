@@ -17,8 +17,41 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Feather from "react-native-vector-icons/Feather";
 
 import { useTheme } from "react-native-paper";
+import { AuthContext } from "../../components/context";
 
 const LoginScreen = ({ navigation }) => {
+
+  const { signIn } = React.useContext(AuthContext);
+
+  async function createAccount() {
+    let email = data.email;
+    let name = data.username;
+    let password = data.password;
+    let item = { name, email, password };
+    let result = await fetch("http://flystudio.co.za:5000/user", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(item),
+    });
+    result = await result.json();
+    console.log(result.message);
+
+    if(result.message=="Successfully registered")
+    {
+      alert('Registration Successful');
+      console.log("Successful");
+      navigation.goBack();
+    }
+    else
+    {
+
+      alert('Registration Failed');
+    }
+    
+  }
   const [data, setData] = React.useState({
     username: "",
     email: "",
@@ -189,28 +222,7 @@ const LoginScreen = ({ navigation }) => {
     }
   };
 
-  const loginHandle = (userName, password) => {
-    const foundUser = Users.filter((item) => {
-      return userName == item.username && password == item.password;
-    });
 
-    if (data.username.length == 0 || data.password.length == 0) {
-      Alert.alert(
-        "Wrong Input!",
-        "Username or password field cannot be empty.",
-        [{ text: "Okay" }]
-      );
-      return;
-    }
-
-    if (foundUser.length == 0) {
-      Alert.alert("Invalid User!", "Username or password is incorrect.", [
-        { text: "Okay" },
-      ]);
-      return;
-    }
-    signIn(foundUser);
-  };
 
   return (
     <ScrollView>
@@ -402,7 +414,7 @@ const LoginScreen = ({ navigation }) => {
             <TouchableOpacity
               style={styles.signIn}
               onPress={() => {
-                loginHandle(data.username, data.password);
+                createAccount();
               }}
             >
               <LinearGradient
