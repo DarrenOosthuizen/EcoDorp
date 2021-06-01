@@ -20,38 +20,50 @@ import { useTheme } from "react-native-paper";
 import { AuthContext } from "../../components/context";
 
 const LoginScreen = ({ navigation }) => {
-
   const { signIn } = React.useContext(AuthContext);
 
   async function createAccount() {
-    let email = data.email;
-    let name = data.username;
-    let password = data.password;
-    let item = { name, email, password };
-    let result = await fetch("http://flystudio.co.za:5000/user", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify(item),
-    });
-    result = await result.json();
-    console.log(result.message);
+    Passwords();
+    if (
+      data.check_Email == true &&
+      data.check_User == true &&
+      data.check_Password == true
+    ) {
+      let email = data.email;
+      let name = data.username;
+      let password = data.password;
+      let item = { name, email, password };
+      let result = await fetch("http://ecovillage.vekemansferre.be:5000/user", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(item),
+      });
+      result = await result.json();
+      console.log(result.message);
 
-    if(result.message=="Successfully registered")
-    {
-      alert('Registration Successful');
-      console.log("Successful");
-      navigation.goBack();
+      if (result.message == "Successfully registered") {
+        alert("Registration Successful");
+        console.log("Successful");
+        navigation.navigate("LoginScreen", {
+          emailAddress: email,
+          passWord: password,
+        });
+      } else {
+        alert("Registration Failed! Try Again");
+      }
+    } else {
+      alert("Please fill all required information in!");
     }
-    else
-    {
-
-      alert('Registration Failed');
-    }
-    
   }
+
+  const Passwords = () => {
+    if (data.password == data.confirmpassword && data.password.length >= 8) {
+      data.check_Password = true;
+    }
+  };
   const [data, setData] = React.useState({
     username: "",
     email: "",
@@ -59,6 +71,7 @@ const LoginScreen = ({ navigation }) => {
     confirmpassword: "",
     check_User: false,
     check_Email: false,
+    check_Password: false,
     secureTextEntry: true,
     confirmsecureTextEntry: true,
     isValidUser: true,
@@ -141,8 +154,7 @@ const LoginScreen = ({ navigation }) => {
         isValidPassword: false,
       });
     }
-    if(val==null || val=="")
-    {
+    if (val == null || val == "") {
       setData({
         ...data,
         password: val,
@@ -165,8 +177,6 @@ const LoginScreen = ({ navigation }) => {
         });
       }
     }
-    
-
   };
 
   const handleConfirmPasswordChange = (val) => {
@@ -184,8 +194,7 @@ const LoginScreen = ({ navigation }) => {
         isMatchingPassword: false,
       });
     }
-    if(val==null || val=="")
-    {
+    if (val == null || val == "") {
       setData({
         ...data,
         confirmpassword: val,
@@ -221,8 +230,6 @@ const LoginScreen = ({ navigation }) => {
       });
     }
   };
-
-
 
   return (
     <ScrollView>
@@ -270,7 +277,6 @@ const LoginScreen = ({ navigation }) => {
               ]}
               autoCapitalize="none"
               onChangeText={(val) => handleUserChange(val)}
-              onEndEditing={(e) => handleValidUser(e.nativeEvent.text)}
             />
             {data.check_User ? (
               <Animatable.View animation="bounceIn">
