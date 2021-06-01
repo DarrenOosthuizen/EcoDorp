@@ -53,7 +53,6 @@ const App = () => {
   };
 
   const theme = isDarkTheme ? CustomerDarkTheme : CustomerDefaultTheme;
-
   const loginReducer = (prevState, action) => {
     switch (action.type) {
       case "RETRIEVE_TOKEN":
