@@ -17,7 +17,43 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Icon from "react-native-vector-icons/Ionicons";
 import { AuthContext } from "../../components/context";
 
-export function DrawerContent(props) {
+export const DrawerContent = (props) => {
+  const [userData, setUserData] = React.useState({
+    emailaddress: "",
+    name: "",
+  });
+
+  var userToken;
+  async function getUserData() {
+    
+    try {
+      userToken = await AsyncStorage.getItem('userToken')
+    } catch (e) {
+    }
+  
+    let result = await fetch(
+      "http://flystudio.co.za:5000/user",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "Authorization" : userToken,
+        }
+      });
+      result = await result.json();
+      setUserData({
+        ...userData,
+        emailaddress : result.email,
+        name : result.name,
+      });
+    console.log("Got Information")
+  }
+  
+  getUserData();
+
+
+
   const { signOut, toggleTheme } = React.useContext(AuthContext);
   const paperTheme = useTheme();
   return (
@@ -33,8 +69,8 @@ export function DrawerContent(props) {
                 size={50}
               />
               <View style={{ marginLeft: 15, flexDirection: "column" }}>
-                <Title style={styles.title}>Ad Vlems</Title>
-                <Caption style={styles.caption}>@vlemsad</Caption>
+                <Title style={styles.title}>{userData.name}</Title>
+                <Caption style={styles.caption}>{userData.emailaddress}</Caption>
               </View>
             </View>
 
