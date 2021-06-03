@@ -114,17 +114,14 @@ const LoginScreen = ({ route, navigation }) => {
     let email = data.emailaddress;
     let password = data.password;
     let item = { email, password };
-    let result = await fetch(
-      "http://ecovillage.vekemansferre.be:5000/auth/login",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify(item),
-      }
-    );
+    let result = await fetch("http://flystudio.co.za:5000/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(item),
+    });
     result = await result.json();
     if (
       ((data.emailaddress = "w"),
