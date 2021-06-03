@@ -14,10 +14,6 @@ import PredictionScreen from "../../screens/MainScreens/PredictionScreen";
 
 const HomeStack = createStackNavigator();
 
-const SetValue = () =>
-{
-  console.log("setting values") ;
-}
 
 const COLORS = {
   Green: "#068527",
@@ -45,7 +41,6 @@ const HomeStackScreen = ({ navigation }) => (
             backgroundColor={COLORS.Green}
             onPress={() => {
               navigation.openDrawer();
-              SetValue();
             }}
           ></Icon.Button>
         ),
@@ -55,7 +50,7 @@ const HomeStackScreen = ({ navigation }) => (
             size={25}
             backgroundColor={COLORS.Green}
             onPress={() => {
-              navigation.navigate("Notification");
+              navigation.navigate("Notification");            
             }}
           ></Icon.Button>
         ),
