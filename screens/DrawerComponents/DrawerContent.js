@@ -17,15 +17,17 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Icon from "react-native-vector-icons/Ionicons";
 import { AuthContext } from "../../components/context";
 
+import IconF5 from 'react-native-vector-icons/FontAwesome5';
+
 export const DrawerContent = (props) => {
   const [userData, setUserData] = React.useState({
     emailaddress: "",
     name: "",
+    totalsensors : 0 ,
   });
 
   var userToken;
   async function getUserData() {
-    
     try {
       userToken = await AsyncStorage.getItem('userToken')
     } catch (e) {
@@ -42,17 +44,16 @@ export const DrawerContent = (props) => {
         }
       });
       result = await result.json();
+      console.log(result) ;
       setUserData({
         ...userData,
         emailaddress : result.email,
         name : result.name,
+        totalsensors : result.sensors.length
       });
-    console.log("Got Information")
   }
   
   getUserData();
-
-
 
   const { signOut, toggleTheme } = React.useContext(AuthContext);
   const paperTheme = useTheme();
@@ -62,12 +63,7 @@ export const DrawerContent = (props) => {
         <View style={styles.drawerContent}>
           <View style={styles.userInfoSection}>
             <View style={{ flexDirection: "row", marginTop: 15 }}>
-              <Avatar.Image
-                source={{
-                  uri: "https://api.adorable.io/avatars/50/abott@adorable.png",
-                }}
-                size={50}
-              />
+            <IconF5 name="user" solid color="#339966" size={50}/>
               <View style={{ marginLeft: 15, flexDirection: "column" }}>
                 <Title style={styles.title}>{userData.name}</Title>
                 <Caption style={styles.caption}>{userData.emailaddress}</Caption>
@@ -77,13 +73,13 @@ export const DrawerContent = (props) => {
             <View style={styles.row}>
               <View style={styles.section}>
                 <Paragraph style={[styles.paragraph, styles.caption]}>
-                  2
+                {userData.totalsensors}
                 </Paragraph>
                 <Caption style={styles.caption}>Devices Online</Caption>
               </View>
               <View style={styles.section}>
                 <Paragraph style={[styles.paragraph, styles.caption]}>
-                  2
+                  {userData.totalsensors}
                 </Paragraph>
                 <Caption style={styles.caption}>Total Devices</Caption>
               </View>
