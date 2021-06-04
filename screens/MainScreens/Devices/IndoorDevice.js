@@ -3,7 +3,24 @@ import { View, Text, StyleSheet, Image } from "react-native";
 import InDoorSensor from "../../../assets/InDoorDevice.png";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-const IndoorDeviceCheck = (props) => {
+const IndoorDevice = (props) => {
+  const sensoreValue = (int) =>
+  {
+    if(int==0)
+    {
+        return '#17d453'
+        console.log('1')
+    }
+    else if(int >0 && int < 5)
+    {
+      return '#FF8C00'
+    }
+
+    else if(int>=5)
+    {
+      return '#F20606'
+    }
+  }
   const truncate = (string) => {
     return string.length > 103 ? string.substring(0, 100) + "..." : string;
   };
@@ -17,33 +34,14 @@ const IndoorDeviceCheck = (props) => {
         <Text style={styles.text}> {truncate(props.text)}</Text>
       </View>
       <View style={styles.iconContainer}>
-        <Icon name="check-circle" solid color="#17D453" size={30}/>
+        <Icon name="circle" solid color={sensoreValue(props.reading)} size={30}/>
       </View>
     </View>
   );
 };
 
-const IndoorDeviceCross = (props) => {
-  const truncate = (string) => {
-    return string.length > 103 ? string.substring(0, 100) + "..." : string;
-  };
-  return (
-    <View style={styles.container}>
-      <View style={styles.imageContainer}>
-        <Image source={InDoorSensor} style={styles.image} />
-      </View>
-      <View style={styles.textContainer}>
-        <Text style={styles.heading}>{props.heading}</Text>
-        <Text style={styles.text}> {truncate(props.text)}</Text>
-      </View>
-      <View style={styles.iconContainer}>
-        <Icon name="times-circle" solid color="#F20606" size={30}/>
-      </View>
-    </View>
-  );
-};
 
-export {IndoorDeviceCheck,IndoorDeviceCross};
+export default IndoorDevice;
 
 const styles = StyleSheet.create({
   container: {
