@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 import {
@@ -17,43 +17,49 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Icon from "react-native-vector-icons/Ionicons";
 import { AuthContext } from "../../components/context";
 
-import IconF5 from 'react-native-vector-icons/FontAwesome5';
+import IconF5 from "react-native-vector-icons/FontAwesome5";
 
 export const DrawerContent = (props) => {
   const [userData, setUserData] = React.useState({
     emailaddress: "",
     name: "",
-    totalsensors : 0 ,
+    totalsensors: 0,
   });
 
   var userToken;
+
+  useEffect(() => {
+    let isMounted = true;
+    getUserData().then(data => {if(isMounted) console.log("user mounted") ;
+  })
+    return () => {isMounted = false};
+  }, []);
+
   async function getUserData() {
     try {
-      userToken = await AsyncStorage.getItem('userToken')
-    } catch (e) {
-    }
-  
-    let result = await fetch(
-      "http://flystudio.co.za:5000/user",
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          "Authorization" : userToken,
-        }
-      });
-      result = await result.json();
-      console.log(result) ;
-      setUserData({
-        ...userData,
-        emailaddress : result.email,
-        name : result.name,
-        totalsensors : result.sensors.length
-      });
+      userToken = await AsyncStorage.getItem("userToken");
+    } catch (e) {}
+
+    let result = await fetch("http://flystudio.co.za:5000/user", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: userToken,
+      },
+    });
+    result = await result.json();
+    setUserData({
+      ...userData,
+      emailaddress: result.email,
+      name: result.name,
+      totalsensors: result.sensors.length,
+    });
+
+    console.log("Updating User 2");
   }
-  
-  getUserData();
+
+  setInterval(getUserData,60000);
 
   const { signOut, toggleTheme } = React.useContext(AuthContext);
   const paperTheme = useTheme();
@@ -63,17 +69,19 @@ export const DrawerContent = (props) => {
         <View style={styles.drawerContent}>
           <View style={styles.userInfoSection}>
             <View style={{ flexDirection: "row", marginTop: 15 }}>
-            <IconF5 name="user" solid color="#339966" size={50}/>
+              <IconF5 name="user" solid color="#339966" size={50} />
               <View style={{ marginLeft: 15, flexDirection: "column" }}>
                 <Title style={styles.title}>{userData.name}</Title>
-                <Caption style={styles.caption}>{userData.emailaddress}</Caption>
+                <Caption style={styles.caption}>
+                  {userData.emailaddress}
+                </Caption>
               </View>
             </View>
 
             <View style={styles.row}>
               <View style={styles.section}>
                 <Paragraph style={[styles.paragraph, styles.caption]}>
-                {userData.totalsensors}
+                  {userData.totalsensors}
                 </Paragraph>
                 <Caption style={styles.caption}>Devices Online</Caption>
               </View>
@@ -171,7 +179,7 @@ export const DrawerContent = (props) => {
       </Drawer.Section>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   drawerContent: {
