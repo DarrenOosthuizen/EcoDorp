@@ -1,57 +1,53 @@
-import React from "react";
-import { View, Text, Button, StyleSheet, ScrollView } from "react-native";
-import {OutdoorDeviceCheck,OutdoorDeviceCross} from "./Devices/OutdoorDevice";
-import {IndoorDeviceCheck,IndoorDeviceCross} from "./Devices/IndoorDevice";
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, ScrollView } from "react-native";
+import OutdoorDevice from "./Devices/OutdoorDevice";
 import IndoorDevice from "./Devices/IndoorDevice";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ManageScreen = () => {
-  var values = [{}];
-
-  const setValue = () => {
-    values = [
-      {
-        key: 1,
-        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vel erat et lectus porttitor faucibus. Praesent nec ante ante. Nunc sed dui at justo pretium tincidunt eu non mi. Nunc.",
-        heading: "Heading 1",
-      },
-      {
-        key: 2,
-        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vel erat et lectus porttitor faucibus. Praesent nec ante ante. Nunc sed dui at justo pretium tincidunt eu non mi. Nunc.",
-        heading: "Heading 2",
+  const [result, setResult] = useState([]); 
+  var values = [];
+  var userToken;
+  var res = []
+  useEffect( () => {
+    const dosomething = async function() {
+      try {
+        userToken = await AsyncStorage.getItem("userToken");
+        console.log(userToken);
+        res = await fetch("http://flystudio.co.za:5000/sensors", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: userToken,
+        },
+        
+      })
+      res = await res.json();
+      setResult(res);
+      } catch (e) {
+        //console.log(e); 
       }
-    ];
-  };
-  setValue();
+      
+    }
+    dosomething();
+  }, []);
   return (
     <ScrollView>
       <View style={styles.container}>
-      {values.map((prediction) => (
-          <OutdoorDeviceCheck
-            key={prediction.key}
-            text={prediction.text}
-            heading={prediction.heading}
-          />
-        ))}
-        {values.map((prediction) => (
-          <OutdoorDeviceCross
-            key={prediction.key}
-            text={prediction.text}
-            heading={prediction.heading}
-          />
-        ))}
-        {values.map((prediction) => (
-          <IndoorDeviceCheck
-            key={prediction.key}
-            text={prediction.text}
-            heading={prediction.heading}
-          />
-        ))}
-        {values.map((prediction) => (
-          <IndoorDeviceCross
-            key={prediction.key}
-            text={prediction.text}
-            heading={prediction.heading}
-          />
+        {result.map((sensor) => (
+          sensor.device_name == "b790" ? (<OutdoorDevice
+            key={sensor.id}
+            text={sensor.device_name}
+            heading={sensor.name}
+            reading= {2}
+          />) : (<IndoorDevice
+            key={sensor.id}
+            text={sensor.device_name}
+            heading={sensor.name}
+            reading= {2}
+          />)
+          
         ))}
       </View>
     </ScrollView>
