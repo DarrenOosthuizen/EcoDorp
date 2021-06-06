@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, Button, StyleSheet } from "react-native";
 import ReadingSlider from "./ReadingSlider";
+import ReadingVirus from "./ReadingVirus";
 import Icon from "react-native-vector-icons/FontAwesome5";
 
 const Reading = (props) => {
@@ -99,13 +100,20 @@ const Reading = (props) => {
   return (
     <View style={styles.container}>
       <View style={styles.ReadingIndex}>
-        <Text>
-          <Icon name="circle" size={20}></Icon>Virus Index
-        </Text>
+        <View style={styles.ReadingIndexText}>
+          <Text style={styles.ReadingIndexHeading}> Virus Index</Text>
+        </View>
+        <View style={styles.ReadingIndexIndicator}>
+          <ReadingVirus value = {props.virus}/>
+        </View>
+        <View style={styles.ReadingIndexValue}>
+          <Text style={styles.ReadingIndexValueText}>{props.virus}</Text>
+          <Text style={styles.ReadingIndexValuePer}>/10</Text>
+        </View>
       </View>
       <View style={styles.ReadingUnit}>
         <View style={styles.ReadingText}>
-          <Icon name="thermometer" size={20}style={styles.ReadingIcon}></Icon>
+          <Icon name="thermometer" size={20} style={styles.ReadingIcon}></Icon>
           <Text style={styles.ReadingHeading}> Temperature</Text>
         </View>
         <View style={styles.ReadingSlider}>
@@ -117,7 +125,7 @@ const Reading = (props) => {
       </View>
       <View style={styles.ReadingUnit}>
         <View style={styles.ReadingText}>
-          <Icon name="tint" size={20}style={styles.ReadingIcon}></Icon>
+          <Icon name="tint" size={20} style={styles.ReadingIcon}></Icon>
           <Text style={styles.ReadingHeading}> Humadity</Text>
         </View>
         <View style={styles.ReadingSlider}>
@@ -219,7 +227,13 @@ export default Reading;
 
 const styles = StyleSheet.create({
   container: {
-    padding: 10,
+    width: "100%",
+  },
+  ReadingIndex: {
+    backgroundColor: "#E4E4E3",
+    paddingTop: 5,
+    paddingBottom: 5,
+    flexDirection: "row",
   },
   ReadingUnit: {
     height: "8%",
@@ -227,7 +241,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   ReadingText: {
-    width: "40%",
+    width: "42%",
     paddingLeft: 5,
     flexDirection: "row",
     alignContent: "flex-start",
@@ -238,7 +252,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   ReadingValue: {
-    width: "35%",
+    width: "33%",
     alignItems: "flex-end",
     justifyContent: "center",
     paddingRight: 5,
@@ -250,9 +264,42 @@ const styles = StyleSheet.create({
   ReadingHeading: {
     color: "#000",
     fontSize: 20,
+    fontWeight: "700",
   },
-  ReadingIcon:
-  {
-      width : 25,
-  }
+  ReadingIcon: {
+    width: 25,
+  },
+  ReadingIndexHeading: {
+    color: "#000",
+    fontSize: 30,
+    fontWeight: "bold",
+  },
+  ReadingIndexText: {
+    width: "55%",
+    paddingLeft: 5,
+    justifyContent: "center",
+  },
+  ReadingIndexValueText: {
+    color: "#51D257",
+    fontSize: 45,
+    fontWeight: "bold",
+  },
+  ReadingIndexValue: {
+    width: "25%",
+    flexDirection: "row",
+    alignItems: "flex-end",
+    justifyContent: "center",
+  },
+  ReadingIndexValuePer: {
+    color: "#51D257",
+    fontSize: 21,
+    alignSelf: "flex-end",
+    top: -4,
+    fontWeight: "bold",
+  },
+  ReadingIndexIndicator: {
+    width: "20%",
+    justifyContent: 'center',
+    alignItems: "flex-end",
+  },
 });
