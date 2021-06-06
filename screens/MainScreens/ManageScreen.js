@@ -9,15 +9,20 @@ const ManageScreen = () => {
   var sensorData = [];
   var userToken;
   var res = [];
+  var sen = [];
   var sensorIDs = [];
+
   useEffect(() => {
     let isMounted = true;
-    dosomething().then(data => {if(isMounted) console.log("sensors mounted") ;
-  })
-    return () => {isMounted = false};
+    GetSensorData().then((data) => {
+      if (isMounted) console.log("sensors mounted");
+    });
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
-  const dosomething = async function () {
+  const GetSensorData = async function () {
     try {
       userToken = await AsyncStorage.getItem("userToken");
       console.log(userToken);
@@ -33,25 +38,41 @@ const ManageScreen = () => {
       });
       res = await res.json();
       sensorIDs = [];
-      //Getting Sensors results
-      const getData = async () => {
-      res.map(mapitem=> 
-        {
-        sensorIDs.push(mapitem.id);
-        });
-      }
-      getData();
-      console.log(sensorIDs),
 
-      res.map((mapitem) => mapitem['reading'] = 6)
+      //Getting Sensors results and pushing to sen array
+        res.map(async(mapitem) => {
+          sensorIDs.push(mapitem.id);
+          let senres = await fetch(
+            "http://flystudio.co.za:5000/sensors/" + mapitem.id + "/data/last",
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                Authorization: userToken,
+              },
+            }
+          );
+          senres = await senres.json();
+          
+          sen.push(senres)
+          console.log(sen);
+        });
+      
+        //Method to check amount of values which are out
+        const amountvalues = () =>
+        {
+          
+        }
+
+      //Running Methods
+      
+      res.map((mapitem) => (mapitem["reading"] = 6));
       setResult(res);
-    } catch (e) {
-      //console.log(e);
-    }
+    } catch (e) {}
   };
-  
- 
-  setInterval(dosomething,30000);
+
+  setInterval(GetSensorData, 30000);
   return (
     <ScrollView>
       <View style={styles.container}>
