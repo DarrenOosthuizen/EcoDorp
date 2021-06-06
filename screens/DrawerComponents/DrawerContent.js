@@ -20,6 +20,7 @@ import { AuthContext } from "../../components/context";
 import IconF5 from "react-native-vector-icons/FontAwesome5";
 
 export const DrawerContent = (props) => {
+  const [shouldRender, setShouldRender] = useState(true);
   const [userData, setUserData] = React.useState({
     emailaddress: "",
     name: "",
@@ -33,6 +34,7 @@ export const DrawerContent = (props) => {
     getUserData().then(data => {if(isMounted) console.log("user mounted") ;
   })
     return () => {isMounted = false};
+    
   }, []);
 
   async function getUserData() {
@@ -55,8 +57,6 @@ export const DrawerContent = (props) => {
       name: result.name,
       totalsensors: result.sensors.length,
     });
-
-    console.log("Updating User 2");
   }
 
   setInterval(getUserData,60000);
