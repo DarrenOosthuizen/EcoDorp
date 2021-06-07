@@ -30,11 +30,9 @@ export const DrawerContent = (props) => {
   var userToken;
 
   useEffect(() => {
-    let isMounted = true;
-    getUserData().then(data => {if(isMounted) console.log("user mounted") ;
-  })
-    return () => {isMounted = false};
-    
+    console.log("starting drawer useEffect")
+    getUserData()
+    console.log("ending drawer useEffect")
   }, []);
 
   async function getUserData() {
