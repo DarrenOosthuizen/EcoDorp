@@ -5,6 +5,12 @@ import ReadingVirus from "./ReadingVirus";
 import Icon from "react-native-vector-icons/FontAwesome5";
 
 const Reading = (props) => {
+  let GreenColor = "#51D257";
+  let RedColor = "#EF1D10";
+
+  const ChangeValue = (value) => {
+    return value.toFixed(1);
+  };
   const GetTempValue = (value) => {
     if (value >= -40 && value <= 85) {
       return (value / 95) * 100;
@@ -97,6 +103,95 @@ const Reading = (props) => {
     }
   };
 
+  const GetColorVirus = (value) => {
+    if (value <= 4) {
+      return "#51D257";
+    }
+    if (value > 4) {
+      return "#EF1D10";
+    }
+  };
+
+  //Set Optimal 10 to 40
+  const SetTempColor = (value) => {
+    if (value >= 10 && value <= 40) {
+      return GreenColor;
+    } else {
+      return RedColor;
+    }
+  };
+
+  //Set Optimal to 30-50
+  const SetHumColor = (value) => {
+    if (value >= 30 && value <= 50) {
+      return GreenColor;
+    } else {
+      return RedColor;
+    }
+  };
+
+  //Set Optimal to 900-1026
+  const SetAirColor = (value) => {
+    if (value >= 900 && value <= 1026) {
+      return GreenColor;
+    } else {
+      return RedColor;
+    }
+  };
+
+  //Set Optimal to 400-1000
+  const SetCO2Color = (value) => {
+    if (value >= 400 && value <= 1000) {
+      return GreenColor;
+    } else {
+      return RedColor;
+    }
+  };
+
+  //Set Optimal to 0-650
+  const SetTVOCColor = (value) => {
+    if (value >= 0 && value <= 650) {
+      return GreenColor;
+    } else {
+      return RedColor;
+    }
+  };
+  //Set Optimal to 0-12
+  const SetPMColor = (value) => {
+    if (value >= 0 && value <= 12) {
+      return GreenColor;
+    } else {
+      return RedColor;
+    }
+  };
+
+  //Set Optimal to 0-25
+  const SetCOColor = (value) => {
+    if (value >= 0 && value <= 9) {
+      return GreenColor;
+    } else {
+      return RedColor;
+    }
+  };
+
+  //Set Optimal to 0-80
+  const SetNO2Color = (value) => {
+    if (value >= 0 && value <= 80) {
+      return GreenColor;
+    } else {
+      return RedColor;
+    }
+  };
+
+  //Set Optimal to 0-70
+  const SetOZONEColor = (value) => {
+    if (value >= 0 && value <= 70) {
+      return GreenColor;
+    } else {
+      return RedColor;
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.ReadingIndex}>
@@ -104,11 +199,25 @@ const Reading = (props) => {
           <Text style={styles.ReadingIndexHeading}> Virus Index</Text>
         </View>
         <View style={styles.ReadingIndexIndicator}>
-          <ReadingVirus value = {props.virus}/>
+          <ReadingVirus value={props.virus} />
         </View>
         <View style={styles.ReadingIndexValue}>
-          <Text style={styles.ReadingIndexValueText}>{props.virus}</Text>
-          <Text style={styles.ReadingIndexValuePer}>/10</Text>
+          <Text
+            style={[
+              { color: GetColorVirus(props.virus) },
+              styles.ReadingIndexValueText,
+            ]}
+          >
+            {props.virus}
+          </Text>
+          <Text
+            style={[
+              { color: GetColorVirus(props.virus) },
+              styles.ReadingIndexValuePer,
+            ]}
+          >
+            /10
+          </Text>
         </View>
       </View>
       <View style={styles.ReadingUnit}>
@@ -117,22 +226,39 @@ const Reading = (props) => {
           <Text style={styles.ReadingHeading}> Temperature</Text>
         </View>
         <View style={styles.ReadingSlider}>
-          <ReadingSlider value={GetTempValue(props.temp)} />
+          <ReadingSlider
+            value={GetTempValue(props.temp)}
+            color={SetTempColor(props.temp)}
+          />
         </View>
         <View style={styles.ReadingValue}>
-          <Text style={styles.ReadingValueText}>{props.temp}°C</Text>
+          <Text
+            style={[
+              { color: SetTempColor(props.temp) },
+              styles.ReadingValueText,
+            ]}
+          >
+            {ChangeValue(props.temp)}°C
+          </Text>
         </View>
       </View>
       <View style={styles.ReadingUnit}>
         <View style={styles.ReadingText}>
           <Icon name="tint" size={20} style={styles.ReadingIcon}></Icon>
-          <Text style={styles.ReadingHeading}> Humadity</Text>
+          <Text style={styles.ReadingHeading}> Humidity</Text>
         </View>
         <View style={styles.ReadingSlider}>
-          <ReadingSlider value={GetHumValue(props.hum)} />
+          <ReadingSlider
+            value={GetHumValue(props.hum)}
+            color={SetHumColor(props.hum)}
+          />
         </View>
         <View style={styles.ReadingValue}>
-          <Text style={styles.ReadingValueText}>{props.hum}%</Text>
+          <Text
+            style={[{ color: SetHumColor(props.hum) }, styles.ReadingValueText]}
+          >
+            {ChangeValue(props.hum)}%
+          </Text>
         </View>
       </View>
       <View style={styles.ReadingUnit}>
@@ -141,10 +267,17 @@ const Reading = (props) => {
           <Text style={styles.ReadingHeading}> Air Pressure</Text>
         </View>
         <View style={styles.ReadingSlider}>
-          <ReadingSlider value={GetAirValue(props.air)} />
+          <ReadingSlider
+            value={GetAirValue(props.air)}
+            color={SetAirColor(props.air)}
+          />
         </View>
         <View style={styles.ReadingValue}>
-          <Text style={styles.ReadingValueText}>{props.air} hPa</Text>
+          <Text
+            style={[{ color: SetAirColor(props.air) }, styles.ReadingValueText]}
+          >
+            {ChangeValue(props.air)} hPa
+          </Text>
         </View>
       </View>
       <View style={styles.ReadingUnit}>
@@ -153,10 +286,17 @@ const Reading = (props) => {
           <Text style={styles.ReadingHeading}> CO2</Text>
         </View>
         <View style={styles.ReadingSlider}>
-          <ReadingSlider value={GetCO2Value(props.co2)} />
+          <ReadingSlider
+            value={GetCO2Value(props.co2)}
+            color={SetCO2Color(props.co2)}
+          />
         </View>
         <View style={styles.ReadingValue}>
-          <Text style={styles.ReadingValueText}>{props.co2} ppm</Text>
+          <Text
+            style={[{ color: SetCO2Color(props.co2) }, styles.ReadingValueText]}
+          >
+            {ChangeValue(props.co2)} ppm
+          </Text>
         </View>
       </View>
       <View style={styles.ReadingUnit}>
@@ -165,10 +305,20 @@ const Reading = (props) => {
           <Text style={styles.ReadingHeading}> TVOC</Text>
         </View>
         <View style={styles.ReadingSlider}>
-          <ReadingSlider value={GetTVOCValue(props.tvoc)} />
+          <ReadingSlider
+            value={GetTVOCValue(props.tvoc)}
+            color={SetTVOCColor(props.tvoc)}
+          />
         </View>
         <View style={styles.ReadingValue}>
-          <Text style={styles.ReadingValueText}>{props.tvoc} ppb</Text>
+          <Text
+            style={[
+              { color: SetTVOCColor(props.tvoc) },
+              styles.ReadingValueText,
+            ]}
+          >
+            {ChangeValue(props.tvoc)} ppb
+          </Text>
         </View>
       </View>
       <View style={styles.ReadingUnit}>
@@ -177,10 +327,17 @@ const Reading = (props) => {
           <Text style={styles.ReadingHeading}> PM2.5</Text>
         </View>
         <View style={styles.ReadingSlider}>
-          <ReadingSlider value={GetPMValue(props.pm)} />
+          <ReadingSlider
+            value={GetPMValue(props.pm)}
+            color={SetPMColor(props.pm)}
+          />
         </View>
         <View style={styles.ReadingValue}>
-          <Text style={styles.ReadingValueText}>{props.pm}µg/m3</Text>
+          <Text
+            style={[{ color: SetPMColor(props.pm) }, styles.ReadingValueText]}
+          >
+            {ChangeValue(props.pm)} µg/m3
+          </Text>
         </View>
       </View>
       <View style={styles.ReadingUnit}>
@@ -189,10 +346,17 @@ const Reading = (props) => {
           <Text style={styles.ReadingHeading}> CO</Text>
         </View>
         <View style={styles.ReadingSlider}>
-          <ReadingSlider value={GetCOValue(props.co)} />
+          <ReadingSlider
+            value={GetCOValue(props.co)}
+            color={SetCOColor(props.co)}
+          />
         </View>
         <View style={styles.ReadingValue}>
-          <Text style={styles.ReadingValueText}>{props.co}ppm</Text>
+          <Text
+            style={[{ color: SetCOColor(props.co) }, styles.ReadingValueText]}
+          >
+            {ChangeValue(props.co)} ppm
+          </Text>
         </View>
       </View>
       <View style={styles.ReadingUnit}>
@@ -201,10 +365,17 @@ const Reading = (props) => {
           <Text style={styles.ReadingHeading}> NO2</Text>
         </View>
         <View style={styles.ReadingSlider}>
-          <ReadingSlider value={GetNO2Value(props.no2)} />
+          <ReadingSlider
+            value={GetNO2Value(props.no2)}
+            color={SetNO2Color(props.no2)}
+          />
         </View>
         <View style={styles.ReadingValue}>
-          <Text style={styles.ReadingValueText}>{props.no2}ppb</Text>
+          <Text
+            style={[{ color: SetNO2Color(props.no2) }, styles.ReadingValueText]}
+          >
+            {ChangeValue(props.no2)} ppb
+          </Text>
         </View>
       </View>
       <View style={styles.ReadingUnit}>
@@ -213,10 +384,20 @@ const Reading = (props) => {
           <Text style={styles.ReadingHeading}> Ozone</Text>
         </View>
         <View style={styles.ReadingSlider}>
-          <ReadingSlider value={GetOzoneValue(props.ozone)} />
+          <ReadingSlider
+            value={GetOzoneValue(props.ozone)}
+            color={SetOZONEColor(props.ozone)}
+          />
         </View>
         <View style={styles.ReadingValue}>
-          <Text style={styles.ReadingValueText}>{props.ozone}ppb</Text>
+          <Text
+            style={[
+              { color: SetOZONEColor(props.ozone) },
+              styles.ReadingValueText,
+            ]}
+          >
+            {ChangeValue(props.ozone)} ppb
+          </Text>
         </View>
       </View>
     </View>
@@ -256,10 +437,11 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
     justifyContent: "center",
     paddingRight: 5,
+    fontWeight: "bold",
   },
   ReadingValueText: {
-    color: "#51D257",
     fontSize: 20,
+    fontWeight: "bold",
   },
   ReadingHeading: {
     color: "#000",
@@ -280,7 +462,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   ReadingIndexValueText: {
-    color: "#51D257",
     fontSize: 45,
     fontWeight: "bold",
   },
@@ -291,7 +472,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   ReadingIndexValuePer: {
-    color: "#51D257",
     fontSize: 21,
     alignSelf: "flex-end",
     top: -4,
@@ -299,7 +479,7 @@ const styles = StyleSheet.create({
   },
   ReadingIndexIndicator: {
     width: "20%",
-    justifyContent: 'center',
+    justifyContent: "center",
     alignItems: "flex-end",
   },
 });
