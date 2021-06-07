@@ -13,13 +13,9 @@ const ManageScreen = () => {
   var sensorIDs = [];
 
   useEffect(() => {
-    let isMounted = true;
-    GetSensorData().then((data) => {
-      if (isMounted) console.log("sensors mounted");
-    });
-    return () => {
-      isMounted = false;
-    };
+    console.log("starting Manage useEffect")
+    GetSensorData();
+    console.log("ending Manage useEffect")
   }, []);
 
   const GetSensorData = async function () {
@@ -72,7 +68,7 @@ const ManageScreen = () => {
     } catch (e) {}
   };
 
-  setInterval(GetSensorData, 30000);
+  //setInterval(GetSensorData, 30000);
   return (
     <ScrollView>
       <View style={styles.container}>
