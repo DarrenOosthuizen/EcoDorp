@@ -9,7 +9,6 @@ const OutdoorDevice= (props) => {
     if(int==0)
     {
         return '#17d453'
-        console.log('1')
     }
     else if(int >0 && int < 5)
     {
