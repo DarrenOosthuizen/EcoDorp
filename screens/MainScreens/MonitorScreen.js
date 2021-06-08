@@ -8,16 +8,11 @@ const MonitorScreen = () => {
   var userToken;
   var res = [];
   var nam = [];
-  var sen = [];
+  var SensorID = [];
+
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(0);
-  const [items, setItems] = useState([
-    { label: "Orange", value: 0 },
-    { label: "Apple", value: 1 },
-  ]);
-  const [sensorItems, setSensorItems] = useState([
-    { label: "Default", value: 0 },
-  ]);
+  const [sensorItems, setSensorItems] = useState([]);
   const [sensorData, setSensorData] = useState([
     {
       date: "2021-06-07T09:39:57.057Z",
@@ -32,17 +27,22 @@ const MonitorScreen = () => {
       no2: 0,
       virus: 0,
     },
-  ]);
+]);
 
   useEffect(() => {
     GetSensorData();
   }, []);
 
+  const sleep = ms => {
+    return new Promise(resolve => setTimeout(resolve, ms))
+  }
   const GetSensorData = async function () {
     try {
-      res = [];
-      sen = [];
+      //Setting var to null
       nam = [];
+      SensorID = [];
+
+      //Getting UserToken to be able to make requests to API
       userToken = await AsyncStorage.getItem("userToken");
 
       //Getting Sensors Name Type and ID
@@ -56,10 +56,45 @@ const MonitorScreen = () => {
       });
       res = await res.json();
 
+      //Getting Sensor Data from API and Populate array
+      const mapLoop = async _ => {
+
+        const promises = res.map(async element => {
+          const senRead = await GetSensorReading(element.id);
+          return senRead
+        })
+        const senObj = await Promise.all(promises)
+        setSensorData(senObj)
+    
+      }
+      mapLoop()
+    
+      async function GetSensorReading(value) {
+        try {
+          userToken = await AsyncStorage.getItem("userToken");
+          let resultsen = await fetch(
+            "http://flystudio.co.za:5000/sensors/" + value + "/data/last",
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                Authorization: userToken,
+              },
+            }
+          );
+          resultsen = await resultsen.json();
+          return sleep(50).then(v => resultsen)
+        } catch (e) {}
+      }
+
+
+
       //Setting Drop Down List
-      let valuese = 0;
+      let valuese = 1;
       res.forEach((element) => {
-        console.log(element.name + " " + valuese);
+        //Populating array with Sensors ID
+        SensorID.push(element.id);
         let obj = {
           label: element.name + " " + "(" + element.device_name + ")",
           value: valuese,
@@ -68,33 +103,17 @@ const MonitorScreen = () => {
         setSensorItems(nam);
         valuese++;
       });
-
-      //Getting Sensors results and pushing to sen array
-      let senres;
-      res.forEach(async (element) => {
-        senres = await fetch(
-          "http://flystudio.co.za:5000/sensors/" + element.id + "/data/last",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-              Authorization: userToken,
-            },
-          }
-        );
-        senres = await senres.json();
-        sen.push(senres);
-        //console.log(sen)
-        setSensorData(sen);
-      });
     } catch (e) {
       console.log(e);
     }
   };
 
+
   const changeSensorReading = () => {
-    return <Readings {...sensorData[value]} />;
+    if (value != 0) {
+      return (
+      <Readings {...sensorData[value-1]} />);
+    }
   };
 
   return (
@@ -116,9 +135,7 @@ const MonitorScreen = () => {
         setOpen={setOpen}
         setValue={setValue}
         setItems={setSensorItems}
-        onChangeValue={(value) => {
-          console.log(value);
-        }}
+        placeholder="Select Device"
       />
       {changeSensorReading()}
     </View>
