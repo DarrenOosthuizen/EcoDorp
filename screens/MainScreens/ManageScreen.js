@@ -39,7 +39,6 @@ const ManageScreen = () => {
     
 
       const mapLoop = async _ => {
-        console.log('Start')
         const promises = res.map(async element => {
           const senObj = await getSensorObjects() ;
           const senRead = await GetSensorReading(element.id);
@@ -48,8 +47,6 @@ const ManageScreen = () => {
           return senObj
         })
         const senObj = await Promise.all(promises)
-        console.log(senObj[0])
-        console.log('End')
         setResult(senObj[0])
       }
       mapLoop()
@@ -70,7 +67,6 @@ const ManageScreen = () => {
           );
           resultsen = await resultsen.json();
           let senReading = amountvalues(resultsen);
-          console.log(senReading);
           return sleep(50).then(v => senReading)
         } catch (e) {}
       }
