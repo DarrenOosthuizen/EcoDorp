@@ -16,7 +16,7 @@ const HomeStack = createStackNavigator();
 
 
 const COLORS = {
-  Green: "#068527",
+  Green: "#0D8735",
 };
 
 const HomeStackScreen = ({ navigation }) => (
