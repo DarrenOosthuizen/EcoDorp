@@ -417,6 +417,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   ReadingUnit: {
+    marginLeft: '2%',
     height: "8%",
     flexDirection: "row",
     alignItems: "center",
