@@ -20,6 +20,11 @@ import { useTheme } from "react-native-paper";
 import { AuthContext } from "../../components/context";
 
 const LoginScreen = ({ navigation }) => {
+  let FirstTextInput;
+  let SecondTextInput;
+  let ThirdTextInput;
+  let FourthTextInput;
+
   const { signIn } = React.useContext(AuthContext);
 
   async function createAccount() {
@@ -277,6 +282,9 @@ const LoginScreen = ({ navigation }) => {
               ]}
               autoCapitalize="none"
               onChangeText={(val) => handleUserChange(val)}
+              ref={(input) => {FirstTextInput = input}}
+              onSubmitEditing={() => SecondTextInput.focus()}
+              blurOnSubmit={false}
             />
             {data.check_User ? (
               <Animatable.View animation="bounceIn">
@@ -316,6 +324,9 @@ const LoginScreen = ({ navigation }) => {
               ]}
               autoCapitalize="none"
               onChangeText={(val) => handleEmailChange(val)}
+              ref={(input) => {SecondTextInput = input}}
+              onSubmitEditing={() => ThirdTextInput.focus()}
+              blurOnSubmit={false}
             />
             {data.check_Email ? (
               <Animatable.View animation="bounceIn">
@@ -354,6 +365,9 @@ const LoginScreen = ({ navigation }) => {
               ]}
               autoCapitalize="none"
               onChangeText={(val) => handlePasswordChange(val)}
+              ref={(input) => {ThirdTextInput = input}}
+              onSubmitEditing={() => FourthTextInput.focus()}
+              blurOnSubmit={false}
             />
             <TouchableOpacity onPress={updateSecureTextEntry}>
               {data.secureTextEntry ? (
@@ -397,6 +411,7 @@ const LoginScreen = ({ navigation }) => {
               ]}
               autoCapitalize="none"
               onChangeText={(val) => handleConfirmPasswordChange(val)}
+              ref={(input) => {FourthTextInput = input}}
             />
             <TouchableOpacity onPress={updateConfirmSecureTextEntry}>
               {data.secureTextEntry ? (
@@ -491,7 +506,7 @@ const height_logo = height * 0.18;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#EEF9E6",
+    backgroundColor: "#FFFF",
   },
   logo: {
     width: height_logo,

@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   Dimensions,
   StyleSheet,
-  StatusBar
+  StatusBar,
 } from "react-native";
 
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -19,7 +19,7 @@ const SplashScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="#61B522" barStyle="light-content" />
-      <View style={styles.header} backgroundColor="#EEF9E6">
+      <View style={styles.header} backgroundColor="#FFFF">
         <Animatable.Image
           animation="pulse"
           easing="ease-out"
@@ -27,8 +27,7 @@ const SplashScreen = ({ navigation }) => {
           source={require("../../assets/BlockLogo.png")}
           style={styles.logo}
           resizeMode="stretch"
-          backgroundColor="#EEF9E6"
-          
+          backgroundColor="#FFFF"
         />
       </View>
       <Animatable.View
@@ -60,7 +59,7 @@ const height_logo = height * 0.28;
 const styles = StyleSheet.create({
   container: {
     flex: 2,
-    backgroundColor: "#EEF9E6",
+    backgroundColor: "#FFFF",
   },
   header: {
     flex: 3,

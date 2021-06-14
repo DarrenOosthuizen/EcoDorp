@@ -19,12 +19,14 @@ import { useTheme } from "react-native-paper";
 import { AuthContext } from "../../components/context";
 
 const LoginScreen = ({ route, navigation }) => {
+  let FirstTextInput ;
+  let SecondTextInput ;
   const [data, setData] = React.useState({
     emailaddress: "",
     password: "",
     check_textInputChange: false,
     secureTextEntry: true,
-    isValidUser: true,
+    isValidEmail: true,
     isValidPassword: true,
   });
 
@@ -40,31 +42,41 @@ const LoginScreen = ({ route, navigation }) => {
 
   const { colors } = useTheme();
 
-  const textInputChange = (val) => {
-    if (val.trim().length >= 4) {
-      setData({
-        ...data,
-        emailaddress: val,
-        check_textInputChange: true,
-        isValidUser: true,
-      });
-    } else {
-      setData({
-        ...data,
-        emailaddress: val,
-        check_textInputChange: false,
-        isValidUser: false,
-      });
+  const handleEmailChange = (val) => {
+    if (typeof val !== "undefined") {
+      var pattern = new RegExp(
+        /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i
+      );
+      if (!pattern.test(val)) {
+        setData({
+          ...data,
+          emailaddress: val,
+          check_textInputChange: false,
+          isValidEmail: false,
+
+        });
+      } else {
+        setData({
+          ...data,
+          emailaddress: val,
+          check_textInputChange: true,
+          isValidEmail: true,
+
+        });
+      }
     }
+
     if (val == null || val == "") {
       setData({
         ...data,
         emailaddress: val,
         check_textInputChange: false,
-        isValidUser: true,
+        isValidEmail: true,
       });
     }
   };
+
+
 
   const handlePasswordChange = (val) => {
     if (val.trim().length >= 8) {
@@ -96,19 +108,7 @@ const LoginScreen = ({ route, navigation }) => {
     });
   };
 
-  const handleValidUser = (val) => {
-    if (val.trim().length >= 4) {
-      setData({
-        ...data,
-        isValidUser: true,
-      });
-    } else {
-      setData({
-        ...data,
-        isValidUser: false,
-      });
-    }
-  };
+
 
   async function login() {
     let email = data.emailaddress;
@@ -123,12 +123,17 @@ const LoginScreen = ({ route, navigation }) => {
       body: JSON.stringify(item),
     });
     result = await result.json();
-    if (
-      ((data.emailaddress = "w"),
-      (data.password = "w"),
-      result.message == "Email or password does not match" &&
-        result.token == null)
-    ) {
+    if (result.message == "Email or password does not match" && result.token == null)
+     {
+      setData({
+        ...data,
+        emailaddress: "",
+        password: "",
+        isValidEmail: true,
+        isValidPassword: true
+
+      });
+      
       Alert.alert(
         "Invalid Login",
         "Email or Password Incorrect!!",
@@ -191,8 +196,11 @@ const LoginScreen = ({ route, navigation }) => {
               },
             ]}
             autoCapitalize="none"
-            onChangeText={(val) => textInputChange(val)}
+            onChangeText={(val) => handleEmailChange(val)}
             value={data.emailaddress}
+            ref={(input) => {FirstTextInput = input}}
+            onSubmitEditing={() => SecondTextInput.focus()}
+            blurOnSubmit={false}
           />
           {data.check_textInputChange ? (
             <Animatable.View animation="bounceIn">
@@ -200,10 +208,10 @@ const LoginScreen = ({ route, navigation }) => {
             </Animatable.View>
           ) : null}
         </View>
-        {data.isValidUser ? null : (
+        {data.isValidEmail ? null : (
           <Animatable.View animation="fadeInLeft" duration={500}>
             <Text style={styles.errorMsg}>
-              Username must be 4 characters long.
+              Invalid Email Address
             </Text>
           </Animatable.View>
         )}
@@ -234,6 +242,7 @@ const LoginScreen = ({ route, navigation }) => {
             autoCapitalize="none"
             onChangeText={(val) => handlePasswordChange(val)}
             value={data.password}
+            ref={(input) => {SecondTextInput = input}}
           />
           <TouchableOpacity onPress={updateSecureTextEntry}>
             {data.secureTextEntry ? (
@@ -261,6 +270,7 @@ const LoginScreen = ({ route, navigation }) => {
             style={styles.signIn}
             onPress={() => {
               login();
+              FirstTextInput.focus();
             }}
           >
             <LinearGradient
@@ -288,7 +298,7 @@ const LoginScreen = ({ route, navigation }) => {
                 password: "",
                 check_textInputChange: false,
                 secureTextEntry: true,
-                isValidUser: true,
+                isValidEmail: true,
                 isValidPassword: true,
               });
             }}
@@ -326,7 +336,7 @@ const height_logo = height * 0.18;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#EEF9E6",
+    backgroundColor: "#FFFF",
   },
   logo: {
     width: height_logo,
