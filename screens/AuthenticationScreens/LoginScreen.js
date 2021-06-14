@@ -149,7 +149,7 @@ const LoginScreen = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor="#009387" barStyle="light-content" />
+      <StatusBar backgroundColor="#0D8735" barStyle="light-content" />
       <View style={styles.header}>
         <Animatable.Image
           animation="pulse"
@@ -183,7 +183,7 @@ const LoginScreen = ({ route, navigation }) => {
           <FontAwesome name="user-o" color={colors.text} size={20} />
           <TextInput
             placeholder="Your Email Address"
-            placeholderTextColor="#666666"
+            placeholderTextColor="#3A4234"
             style={[
               styles.textInput,
               {
@@ -223,7 +223,7 @@ const LoginScreen = ({ route, navigation }) => {
           <Feather name="lock" color={colors.text} size={20} />
           <TextInput
             placeholder="Your Password"
-            placeholderTextColor="#666666"
+            placeholderTextColor="#3A4234"
             secureTextEntry={data.secureTextEntry ? true : false}
             style={[
               styles.textInput,
@@ -252,7 +252,7 @@ const LoginScreen = ({ route, navigation }) => {
         )}
 
         <TouchableOpacity>
-          <Text style={{ color: "#068527", marginTop: 15 }}>
+          <Text style={{ color: "#0D8735", marginTop: 15 }}>
             Forgot password?
           </Text>
         </TouchableOpacity>
@@ -264,7 +264,7 @@ const LoginScreen = ({ route, navigation }) => {
             }}
           >
             <LinearGradient
-              colors={["#166d3b", "#166d3b"]}
+              colors={["#0D8735", "#0D8735"]}
               style={styles.signIn}
             >
               <Text
@@ -295,7 +295,7 @@ const LoginScreen = ({ route, navigation }) => {
             style={[
               styles.signIn,
               {
-                borderColor: "#166d3b",
+                borderColor: "#0D8735",
                 borderWidth: 1,
                 marginTop: 15,
               },
@@ -305,7 +305,7 @@ const LoginScreen = ({ route, navigation }) => {
               style={[
                 styles.textSign,
                 {
-                  color: "#068527",
+                  color: "#0D8735",
                 },
               ]}
             >
@@ -326,7 +326,7 @@ const height_logo = height * 0.18;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#EEF9E6",
   },
   logo: {
     width: height_logo,

@@ -18,8 +18,8 @@ const SplashScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor="#009387" barStyle="light-content" />
-      <View style={styles.header}>
+      <StatusBar backgroundColor="#61B522" barStyle="light-content" />
+      <View style={styles.header} backgroundColor="#EEF9E6">
         <Animatable.Image
           animation="pulse"
           easing="ease-out"
@@ -27,6 +27,8 @@ const SplashScreen = ({ navigation }) => {
           source={require("../../assets/BlockLogo.png")}
           style={styles.logo}
           resizeMode="stretch"
+          backgroundColor="#EEF9E6"
+          
         />
       </View>
       <Animatable.View
@@ -34,11 +36,11 @@ const SplashScreen = ({ navigation }) => {
         animation="fadeInUpBig"
       >
         <Text style={styles.title}>Stay connected with your BestFriend!</Text>
-        <Text style={styles.text}>Sign in with account.</Text>
+        <Text style={styles.text}>Sign in with Boekel account.</Text>
         <View style={styles.button}>
           <TouchableOpacity onPress={() => navigation.navigate("LoginScreen")}>
             <LinearGradient
-              colors={["#166d3b", "#166d3b"]}
+              colors={["#0A8934", "#0A8934"]}
               style={styles.signIn}
             >
               <Text style={styles.textSign}>Login</Text>
@@ -58,7 +60,7 @@ const height_logo = height * 0.28;
 const styles = StyleSheet.create({
   container: {
     flex: 2,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#EEF9E6",
   },
   header: {
     flex: 3,
@@ -67,7 +69,7 @@ const styles = StyleSheet.create({
   },
   footer: {
     flex: 1.3,
-    backgroundColor: "#61B61C",
+    backgroundColor: "#61B522",
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     paddingVertical: 50,
@@ -95,7 +97,7 @@ const styles = StyleSheet.create({
     height: 40,
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 50,
+    borderRadius: 100,
     flexDirection: "row",
   },
   textSign: {
