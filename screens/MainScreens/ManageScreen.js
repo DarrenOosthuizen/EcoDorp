@@ -1,26 +1,34 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView, Button, TouchableOpacity,ActivityIndicator } from "react-native";
 import OutdoorDevice from "./Devices/OutdoorDevice";
 import IndoorDevice from "./Devices/IndoorDevice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const ManageScreen = () => {
+
+const ManageScreen = ({navigation}) => {
   const [result, setResult] = useState([]);
   var userToken;
   var res = [];
+  var selectedData ;
+  const [loginState,SetloginState] = useState(false);
 
   useEffect(() => {
     GetSensorData();
+    SetloginState(true)
   }, []);
 
-
-  const sleep = ms => {
-    return new Promise(resolve => setTimeout(resolve, ms))
-  }
+  const sleep = (ms) => {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  };
   const getSensorObjects = () => {
-    return sleep(50).then(v => res)
-  }
-  
+    return sleep(50).then((v) => res);
+  };
+
+  const [isModalVisible, setModalVisible] = useState(false);
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
 
   const GetSensorData = async function () {
     try {
@@ -36,21 +44,20 @@ const ManageScreen = () => {
         },
       });
       res = await res.json();
-    
 
-      const mapLoop = async _ => {
-        const promises = res.map(async element => {
-          const senObj = await getSensorObjects() ;
+      const mapLoop = async (_) => {
+        const promises = res.map(async (element) => {
+          const senObj = await getSensorObjects();
           const senRead = await GetSensorReading(element.id);
 
-          element["reading"] = senRead
-          return senObj
-        })
-        const senObj = await Promise.all(promises)
-        setResult(senObj[0])
-      }
-      mapLoop()
-
+          element["reading"] = senRead;
+          return senObj;
+        });
+        const senObj = await Promise.all(promises);
+        setResult(senObj[0]);
+      };
+      mapLoop();
+      
       async function GetSensorReading(value) {
         try {
           userToken = await AsyncStorage.getItem("userToken");
@@ -67,10 +74,11 @@ const ManageScreen = () => {
           );
           resultsen = await resultsen.json();
           let senReading = amountvalues(resultsen);
-          return sleep(50).then(v => senReading)
+          return sleep(50).then((v) => senReading);
+         
         } catch (e) {}
       }
-      
+
       //Method to check amount of values which are out
       const amountvalues = (readingObject) => {
         let Reading = 0;
@@ -134,27 +142,38 @@ const ManageScreen = () => {
     } catch (e) {}
   };
 
-  //setInterval(GetSensorData, 10000);
+  if (loginState==false) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size={100} color="#2DAF33" />
+      </View>
+    );
+  }
+
   return (
     <ScrollView>
       <View style={styles.container}>
         {result.map((sensor) =>
           sensor.device_name == "b790" ? (
-            <OutdoorDevice
-              key={sensor.id}
-              text={sensor.device_name}
-              heading={sensor.name}
-              reading={sensor.reading}
-            />
+              <OutdoorDevice
+                key={sensor.id}
+                text={sensor.device_name}
+                heading={sensor.name}
+                reading={sensor.reading}
+                object={sensor}
+              />
           ) : (
-            <IndoorDevice
-              key={sensor.id}
-              text={sensor.device_name}
-              heading={sensor.name}
-              reading={sensor.reading}
-            />
+
+              <IndoorDevice
+                key={sensor.id}
+                text={sensor.device_name}
+                heading={sensor.name}
+                reading={sensor.reading}
+                object={sensor}
+              />
           )
         )}
+        
       </View>
     </ScrollView>
   );
@@ -162,10 +181,19 @@ const ManageScreen = () => {
 
 export default ManageScreen;
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+  },
+  modalcon:{
+    backgroundColor: "#fff",
+    borderRadius: 10,
+  },
+  modalclose:{
+
+    backgroundColor: "#2DAF33"
   },
 });
