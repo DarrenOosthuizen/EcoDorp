@@ -6,6 +6,7 @@ import {
   StyleSheet,
   ScrollView,
   Alert,
+  StatusBar
 } from "react-native";
 import BezierLineChart from "../Diagrams/BezierLineChart";
 import LineChart from "../Diagrams/LineChart";
@@ -60,6 +61,7 @@ const HomeScreen = () => {
     
     <ScrollView>
       <View style={styles.container} id="test">
+        <StatusBar backgroundColor="#0D8735" barStyle="light-content" />
         <ScrollView horizontal={true}>
           <BezierLineChart
             style={styles.test}
