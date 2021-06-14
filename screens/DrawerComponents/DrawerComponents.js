@@ -4,13 +4,13 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Icon from "react-native-vector-icons/Ionicons";
 import { StyleSheet, Text, View } from "react-native";
 
-import HomeScreen from "../../screens/MainScreens/HomeScreen";
-import SettingScreen from "../../screens/MainScreens/SettingScreen";
-import MonitorScreen from "../../screens/MainScreens/MonitorScreen";
-import ManageScreen from "../../screens/MainScreens/ManageScreen";
-import NotificationScreen from "../../screens/MainScreens/NotificationScreen";
-import RoomLayoutScreen from "../../screens/MainScreens/RoomLayoutScreen";
-import PredictionScreen from "../../screens/MainScreens/PredictionScreen";
+import DataScreen from "../MainScreens/DataScreen";
+import SettingStackScreen from "../MainScreens/UserSettings/SettingStackScreen";
+import MonitorScreen from "../MainScreens/MonitorScreen";
+import ManageScreen from "../MainScreens/ManageScreen";
+import NotificationScreen from "../MainScreens/NotificationScreen";
+import ForeCastingScreen from "../MainScreens/ForecastingScreen";
+import PredictionScreen from "../MainScreens/PredictionScreen";
 
 const HomeStack = createStackNavigator();
 
@@ -31,7 +31,7 @@ const HomeStackScreen = ({ navigation }) => (
   >
     <HomeStack.Screen
       name="HomeSec"
-      component={HomeScreen}
+      component={MonitorScreen}
       options={{
         title: "Home Page",
         headerLeft: () => (
@@ -75,7 +75,7 @@ const HomeStackScreen = ({ navigation }) => (
     />
     <HomeStack.Screen
       name="Settings"
-      component={SettingScreen}
+      component={SettingStackScreen}
       options={{
         title: "Settings",
         headerLeft: () => (
@@ -125,10 +125,10 @@ const HomeStackScreen = ({ navigation }) => (
       }}
     />
     <HomeStack.Screen
-      name="RoomLayout"
-      component={RoomLayoutScreen}
+      name="ForeCasting"
+      component={ForeCastingScreen}
       options={{
-        title: "Room Layout",
+        title: "Fore Casting",
         headerLeft: () => (
           <Icon.Button
             name="ios-menu"
@@ -143,7 +143,7 @@ const HomeStackScreen = ({ navigation }) => (
     />
     <HomeStack.Screen
       name="Monitor"
-      component={MonitorScreen}
+      component={DataScreen}
       options={{
         title: "Monitor Results",
         headerLeft: () => (
