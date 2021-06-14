@@ -31,6 +31,7 @@ const ManageScreen = ({navigation}) => {
   };
 
   const GetSensorData = async function () {
+    
     try {
       userToken = await AsyncStorage.getItem("userToken");
 
@@ -76,7 +77,9 @@ const ManageScreen = ({navigation}) => {
           let senReading = amountvalues(resultsen);
           return sleep(50).then((v) => senReading);
          
-        } catch (e) {}
+        } catch (e) {
+          console.log(e)
+        }
       }
 
       //Method to check amount of values which are out
