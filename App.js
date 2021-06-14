@@ -56,8 +56,8 @@ const App = () => {
     colors: {
       ...DefaultTheme.colors,
       ...PaperDefaultTheme.colors,
-      backgroundColor: "#ffffff",
-      text: "#333333",
+      backgroundColor: "#fff",
+      text: "#3A4234",
       splashbackground: "#61B61C",
     },
   };
@@ -155,9 +155,10 @@ const App = () => {
   }, []);
 
   if (loginState.isLoading) {
+    console.log("laoding activity indicator")
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" />
+        <ActivityIndicator size={150} color= "#2DAF33" />
       </View>
     );
   }
