@@ -1,9 +1,14 @@
-import React from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import React, {useState} from "react";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import InDoorSensor from "../../../assets/InDoorDevice.png";
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import ManageModal from "../Modal/ManageModal";
 
 const IndoorDevice = (props) => {
+  const [showModal, setShowModal] = useState(false);
+  const openModal = () => {
+    setShowModal((prev) => !prev);
+  };
   const sensoreValue = (int) =>
   {
     if(int==0)
@@ -25,7 +30,9 @@ const IndoorDevice = (props) => {
     return string.length > 103 ? string.substring(0, 100) + "..." : string;
   };
   return (
-    <View style={styles.container}>
+    <View>
+      <View>
+        <TouchableOpacity style={styles.container} onPress={openModal}>
       <View style={styles.imageContainer}>
         <Image source={InDoorSensor} style={styles.image} />
       </View>
@@ -35,6 +42,16 @@ const IndoorDevice = (props) => {
       </View>
       <View style={styles.iconContainer}>
         <Icon name="circle" solid color={sensoreValue(props.reading)} size={30}/>
+      </View>
+      </TouchableOpacity>
+      </View>
+      
+      <View>
+      <ManageModal
+          showModal={showModal}
+          setShowModal={setShowModal}
+          objectModal={props.object}
+        />
       </View>
     </View>
   );
