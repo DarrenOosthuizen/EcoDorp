@@ -30,9 +30,8 @@ export const DrawerContent = (props) => {
   var userToken;
 
   useEffect(() => {
-    console.log("starting drawer useEffect")
     getUserData()
-    console.log("ending drawer useEffect")
+
   }, []);
 
   async function getUserData() {
