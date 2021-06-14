@@ -445,7 +445,7 @@ const styles = StyleSheet.create({
   },
   ReadingHeading: {
     color: "#000",
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "700",
   },
   ReadingIcon: {
