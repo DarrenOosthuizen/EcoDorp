@@ -112,11 +112,11 @@ export const DrawerContent = (props) => {
             />
             <DrawerItem
               icon={({ color, size }) => (
-                <Icon name="bed-outline" color={color} size={size} />
+                <Icon name="cloud-outline" color={color} size={size} />
               )}
-              label="Room Layout"
+              label="Fore Casting"
               onPress={() => {
-                props.navigation.navigate("RoomLayout");
+                props.navigation.navigate("ForeCasting");
               }}
             />
             <DrawerItem
