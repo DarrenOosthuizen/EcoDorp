@@ -4,14 +4,15 @@ import DropDownPicker from "react-native-dropdown-picker";
 import Readings from "./Readings/Reading";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const MonitorScreen = () => {
+const MonitorScreen = (props) => {
   var userToken;
   var res = [];
   var nam = [];
   var SensorID = [];
-
+  const [placeholdervalue, setplaceholdevalue] = useState()
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(1);
+  const [loading, setLoading] = useState(false);
   const [sensorItems, setSensorItems] = useState([]);
   const [sensorData, setSensorData] = useState([
     {
@@ -27,15 +28,15 @@ const MonitorScreen = () => {
       no2: 0,
       virus: 0,
     },
-]);
+  ]);
 
   useEffect(() => {
     GetSensorData();
   }, []);
 
-  const sleep = ms => {
-    return new Promise(resolve => setTimeout(resolve, ms))
-  }
+  const sleep = (ms) => {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  };
   const GetSensorData = async function () {
     try {
       //Setting var to null
@@ -55,20 +56,18 @@ const MonitorScreen = () => {
         },
       });
       res = await res.json();
-
+      setplaceholdevalue(res[0].name + " " + "(" + res[0].device_name+ ")" )
       //Getting Sensor Data from API and Populate array
-      const mapLoop = async _ => {
-
-        const promises = res.map(async element => {
+      const mapLoop = async (_) => {
+        const promises = res.map(async (element) => {
           const senRead = await GetSensorReading(element.id);
-          return senRead
-        })
-        const senObj = await Promise.all(promises)
-        setSensorData(senObj)
-    
-      }
-      mapLoop()
-    
+          return senRead;
+        });
+        const senObj = await Promise.all(promises);
+        setSensorData(senObj);
+      };
+      mapLoop();
+
       async function GetSensorReading(value) {
         try {
           userToken = await AsyncStorage.getItem("userToken");
@@ -84,11 +83,9 @@ const MonitorScreen = () => {
             }
           );
           resultsen = await resultsen.json();
-          return sleep(50).then(v => resultsen)
+          return sleep(50).then((v) => resultsen);
         } catch (e) {}
       }
-
-
 
       //Setting Drop Down List
       let valuese = 1;
@@ -108,11 +105,9 @@ const MonitorScreen = () => {
     }
   };
 
-
   const changeSensorReading = () => {
     if (value != 0) {
-      return (
-      <Readings {...sensorData[value-1]} />);
+      return <Readings {...sensorData[value - 1]} />;
     }
   };
 
@@ -135,7 +130,8 @@ const MonitorScreen = () => {
         setOpen={setOpen}
         setValue={setValue}
         setItems={setSensorItems}
-        placeholder="Select Device"
+        loading={loading}
+        placeholder={placeholdervalue}
       />
       {changeSensorReading()}
     </View>
@@ -150,7 +146,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   dropdown: {
-    marginBottom: "5%",
+    marginBottom: "0%",
     borderRadius: 0,
     borderColor: "#fff",
     fontSize: 20,
