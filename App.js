@@ -23,26 +23,23 @@ const Drawer = createDrawerNavigator();
 const App = () => {
   const [isDarkTheme, setIsDarkTheme] = React.useState(false);
 
-
   const readThemeData = async () => {
     try {
-      const userTheme = await AsyncStorage.getItem('userTheme') 
-      alert(userTheme.toString())
+      const userTheme = await AsyncStorage.getItem("userTheme");
+      alert(userTheme.toString());
     } catch (e) {
-      alert('Failed to fetch the data from storage')
+      alert("Failed to fetch the data from storage");
     }
-    
-  }
+  };
 
   const setThemeData = async () => {
-    const value1 = !isDarkTheme
+    const value1 = !isDarkTheme;
     try {
-      await AsyncStorage.setItem('userTheme', value1.toString())
+      await AsyncStorage.setItem("userTheme", value1.toString());
     } catch (e) {
-      alert('Failed to fetch the data from storage')
+      alert("Failed to fetch the data from storage");
     }
-    
-  }
+  };
 
   const initialLoginState = {
     isLoading: true,
@@ -50,7 +47,6 @@ const App = () => {
     userToken: null,
   };
   const CustomerDefaultTheme = {
-    
     ...DefaultTheme,
     ...PaperDefaultTheme,
     colors: {
@@ -134,8 +130,8 @@ const App = () => {
         setIsLoading(false);
       },
       toggleTheme: () => {
-        setIsDarkTheme(isDarkTheme => !isDarkTheme);
-        console.log(isDarkTheme)
+        setIsDarkTheme((isDarkTheme) => !isDarkTheme);
+        console.log(isDarkTheme);
       },
     }),
     []
@@ -155,10 +151,9 @@ const App = () => {
   }, []);
 
   if (loginState.isLoading) {
-    console.log("laoding activity indicator")
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size={150} color= "#2DAF33" />
+        <ActivityIndicator size={150} color="#2DAF33" />
       </View>
     );
   }
