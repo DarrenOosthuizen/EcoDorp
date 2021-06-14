@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, ScrollView, Button, TouchableOpacity,ActivityIndicator } from "react-native";
+import { View, StyleSheet, ScrollView, Button, TouchableOpacity,ActivityIndicator,StatusBar } from "react-native";
 import OutdoorDevice from "./Devices/OutdoorDevice";
 import IndoorDevice from "./Devices/IndoorDevice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
