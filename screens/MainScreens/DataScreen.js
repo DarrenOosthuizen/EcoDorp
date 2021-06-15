@@ -25,7 +25,7 @@ const DataScreen = () => {
     }
   };
 
-  readData();
+  //readData();
   const testobject = [
     {
       name: "Random Info",
