@@ -15,6 +15,7 @@ import * as Animatable from "react-native-animatable";
 import { LinearGradient } from "expo-linear-gradient";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Feather from "react-native-vector-icons/Feather";
+import { Host } from "../env";
 
 import { useTheme } from "react-native-paper";
 import { AuthContext } from "../../components/context";
@@ -38,7 +39,7 @@ const LoginScreen = ({ navigation }) => {
       let name = data.username;
       let password = data.password;
       let item = { name, email, password };
-      let result = await fetch("http://ecovillage.vekemansferre.be:5000/user", {
+      let result = await fetch(Host + "/user", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -282,7 +283,9 @@ const LoginScreen = ({ navigation }) => {
               ]}
               autoCapitalize="none"
               onChangeText={(val) => handleUserChange(val)}
-              ref={(input) => {FirstTextInput = input}}
+              ref={(input) => {
+                FirstTextInput = input;
+              }}
               onSubmitEditing={() => SecondTextInput.focus()}
               blurOnSubmit={false}
             />
@@ -324,7 +327,9 @@ const LoginScreen = ({ navigation }) => {
               ]}
               autoCapitalize="none"
               onChangeText={(val) => handleEmailChange(val)}
-              ref={(input) => {SecondTextInput = input}}
+              ref={(input) => {
+                SecondTextInput = input;
+              }}
               onSubmitEditing={() => ThirdTextInput.focus()}
               blurOnSubmit={false}
             />
@@ -365,7 +370,9 @@ const LoginScreen = ({ navigation }) => {
               ]}
               autoCapitalize="none"
               onChangeText={(val) => handlePasswordChange(val)}
-              ref={(input) => {ThirdTextInput = input}}
+              ref={(input) => {
+                ThirdTextInput = input;
+              }}
               onSubmitEditing={() => FourthTextInput.focus()}
               blurOnSubmit={false}
             />
@@ -377,7 +384,7 @@ const LoginScreen = ({ navigation }) => {
               )}
             </TouchableOpacity>
           </View>
-          
+
           {data.isValidPassword ? null : (
             <Animatable.View animation="fadeInLeft" duration={500}>
               <Text style={styles.errorMsg}>
@@ -411,7 +418,9 @@ const LoginScreen = ({ navigation }) => {
               ]}
               autoCapitalize="none"
               onChangeText={(val) => handleConfirmPasswordChange(val)}
-              ref={(input) => {FourthTextInput = input}}
+              ref={(input) => {
+                FourthTextInput = input;
+              }}
             />
             <TouchableOpacity onPress={updateConfirmSecureTextEntry}>
               {data.secureTextEntry ? (
