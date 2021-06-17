@@ -1,12 +1,15 @@
 {
   "name": "EcoDorp",
   "displayName": "EcoDorp",
+  "icon": "./assets/logo.png",
   "expo": {
     "name": "EcoDorp",
     "slug": "EcoDorp",
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "description": "Mobile Application for EcoDorp",
+    "githubUrl": "https://github.com/DarrenOosthuizen/EcoDorp"
   }
 }
