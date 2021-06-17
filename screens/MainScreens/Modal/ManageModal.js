@@ -11,6 +11,7 @@ import Modal from "react-native-modal";
 import ModalReading from "./ManageModalReading";
 import ReadingView from "../Readings/Reading";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {Host} from "../../env";
 
 const ModalTester = ({ showModal, setShowModal, objectModal }) => {
   var userToken;
@@ -48,7 +49,7 @@ const GetData = (value) =>{
     try {
       userToken = await AsyncStorage.getItem("userToken");
       let resultsen = await fetch(
-        "http://flystudio.co.za:5000/sensors/" + value + "/data/last",
+        Host +  "/sensors/" + value + "/data/last",
         {
           method: "GET",
           headers: {
