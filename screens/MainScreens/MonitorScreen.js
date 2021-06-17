@@ -3,13 +3,14 @@ import { View, Text, Button, StyleSheet, ScrollView } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import Readings from "./Readings/Reading";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Host } from "../env";
 
 const MonitorScreen = (props) => {
   var userToken;
   var res = [];
   var nam = [];
   var SensorID = [];
-  const [placeholdervalue, setplaceholdevalue] = useState()
+  const [placeholdervalue, setplaceholdevalue] = useState();
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -47,7 +48,7 @@ const MonitorScreen = (props) => {
       userToken = await AsyncStorage.getItem("userToken");
 
       //Getting Sensors Name Type and ID
-      res = await fetch("http://flystudio.co.za:5000/sensors", {
+      res = await fetch(Host + "/sensors", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -56,7 +57,7 @@ const MonitorScreen = (props) => {
         },
       });
       res = await res.json();
-      setplaceholdevalue(res[0].name + " " + "(" + res[0].device_name+ ")" )
+      setplaceholdevalue(res[0].name + " " + "(" + res[0].device_name + ")");
       //Getting Sensor Data from API and Populate array
       const mapLoop = async (_) => {
         const promises = res.map(async (element) => {
@@ -72,7 +73,7 @@ const MonitorScreen = (props) => {
         try {
           userToken = await AsyncStorage.getItem("userToken");
           let resultsen = await fetch(
-            "http://flystudio.co.za:5000/sensors/" + value + "/data/last",
+            Host + "/sensors/" + value + "/data/last",
             {
               method: "GET",
               headers: {
