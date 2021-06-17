@@ -16,6 +16,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Icon from "react-native-vector-icons/Ionicons";
 import { AuthContext } from "../../components/context";
+import {Host} from "../env"
 
 import IconF5 from "react-native-vector-icons/FontAwesome5";
 
@@ -30,8 +31,7 @@ export const DrawerContent = (props) => {
   var userToken;
 
   useEffect(() => {
-    getUserData()
-
+    getUserData();
   }, []);
 
   async function getUserData() {
@@ -39,7 +39,7 @@ export const DrawerContent = (props) => {
       userToken = await AsyncStorage.getItem("userToken");
     } catch (e) {}
 
-    let result = await fetch("http://flystudio.co.za:5000/user", {
+    let result = await fetch(Host + "/user", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -48,15 +48,22 @@ export const DrawerContent = (props) => {
       },
     });
     result = await result.json();
+    if (result.message == "Token blacklisted. Please log in again" || result.message == "Invalid token. Please log in again") {
+      alert("Credentials Expired. Please Login again!");
+      signOut();
+    }
+
+
     setUserData({
       ...userData,
       emailaddress: result.email,
       name: result.name,
       totalsensors: result.sensors.length,
     });
+  
   }
 
-  setInterval(getUserData,60000);
+  setInterval(getUserData, 60000);
 
   const { signOut, toggleTheme } = React.useContext(AuthContext);
   const paperTheme = useTheme();
