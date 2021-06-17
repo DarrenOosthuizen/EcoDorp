@@ -128,7 +128,7 @@ const HomeStackScreen = ({ navigation }) => (
       name="ForeCasting"
       component={ForeCastingScreen}
       options={{
-        title: "Fore Casting",
+        title: "Forecast",
         headerLeft: () => (
           <Icon.Button
             name="ios-menu"
