@@ -1,20 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, ScrollView, Button, TouchableOpacity,ActivityIndicator,StatusBar } from "react-native";
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  Button,
+  TouchableOpacity,
+  ActivityIndicator,
+  StatusBar,
+} from "react-native";
 import OutdoorDevice from "./Devices/OutdoorDevice";
 import IndoorDevice from "./Devices/IndoorDevice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {Host} from "../env"
 
-
-const ManageScreen = ({navigation}) => {
+const ManageScreen = ({ navigation }) => {
   const [result, setResult] = useState([]);
   var userToken;
   var res = [];
-  var selectedData ;
-  const [loginState,SetloginState] = useState(false);
+  var selectedData;
+  const [loginState, SetloginState] = useState(false);
 
   useEffect(() => {
     GetSensorData();
-    SetloginState(true)
+    SetloginState(true);
   }, []);
 
   const sleep = (ms) => {
@@ -31,12 +39,11 @@ const ManageScreen = ({navigation}) => {
   };
 
   const GetSensorData = async function () {
-    
     try {
       userToken = await AsyncStorage.getItem("userToken");
 
       //Getting Sensors Name Type and ID
-      res = await fetch("http://flystudio.co.za:5000/sensors", {
+      res = await fetch(Host + "/sensors", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -58,12 +65,14 @@ const ManageScreen = ({navigation}) => {
         setResult(senObj[0]);
       };
       mapLoop();
-      
+
       async function GetSensorReading(value) {
         try {
           userToken = await AsyncStorage.getItem("userToken");
           let resultsen = await fetch(
-            "http://flystudio.co.za:5000/sensors/" + value + "/data/last",
+            Host + "/sensors/" +
+              value +
+              "/data/last",
             {
               method: "GET",
               headers: {
@@ -76,9 +85,8 @@ const ManageScreen = ({navigation}) => {
           resultsen = await resultsen.json();
           let senReading = amountvalues(resultsen);
           return sleep(50).then((v) => senReading);
-         
         } catch (e) {
-          console.log(e)
+          console.log(e);
         }
       }
 
@@ -145,7 +153,7 @@ const ManageScreen = ({navigation}) => {
     } catch (e) {}
   };
 
-  if (loginState==false) {
+  if (loginState == false) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <ActivityIndicator size={100} color="#2DAF33" />
@@ -158,25 +166,23 @@ const ManageScreen = ({navigation}) => {
       <View style={styles.container}>
         {result.map((sensor) =>
           sensor.device_name == "b790" ? (
-              <OutdoorDevice
-                key={sensor.id}
-                text={sensor.device_name}
-                heading={sensor.name}
-                reading={sensor.reading}
-                object={sensor}
-              />
+            <OutdoorDevice
+              key={sensor.id}
+              text={sensor.device_name}
+              heading={sensor.name}
+              reading={sensor.reading}
+              object={sensor}
+            />
           ) : (
-
-              <IndoorDevice
-                key={sensor.id}
-                text={sensor.device_name}
-                heading={sensor.name}
-                reading={sensor.reading}
-                object={sensor}
-              />
+            <IndoorDevice
+              key={sensor.id}
+              text={sensor.device_name}
+              heading={sensor.name}
+              reading={sensor.reading}
+              object={sensor}
+            />
           )
         )}
-        
       </View>
     </ScrollView>
   );
@@ -184,19 +190,17 @@ const ManageScreen = ({navigation}) => {
 
 export default ManageScreen;
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
   },
-  modalcon:{
+  modalcon: {
     backgroundColor: "#fff",
     borderRadius: 10,
   },
-  modalclose:{
-
-    backgroundColor: "#2DAF33"
+  modalclose: {
+    backgroundColor: "#2DAF33",
   },
 });
