@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Reading from "../DataScreen";
 import ForeCast from "./ForeCastScreen";
+import NewForecast from "./ForeCasts/ForeCast";
 import {
   View,
   Text,
@@ -95,7 +96,7 @@ function ForeCastTab() {
         <Tab.Screen
           key={element.value}
           name={element.label}
-          children={() => <ForeCast sensorID={element.value} />}
+          children={() => <NewForecast sensorID={element.value} />}
           options={{
             tabBarLabel: element.label,
             tabBarIcon: () => (
