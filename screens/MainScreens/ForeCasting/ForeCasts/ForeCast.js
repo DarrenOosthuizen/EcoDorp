@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   ScrollView,
 } from "react-native";
+import * as Animatable from "react-native-animatable";
 
 import BezierLineChart from "../../../Diagrams/BarChart";
 
@@ -26,7 +27,7 @@ const ForeCast = (props) => {
       <ScrollView>
         {/* Displaying Temperature */}
         <Temperature sensorID={props.sensorID} />
-
+        
         {/* Displaying Humidity */}
         <Humidity sensorID={props.sensorID} />
 
@@ -59,4 +60,5 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
   },
+  
 });
