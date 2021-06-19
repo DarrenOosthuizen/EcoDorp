@@ -14,7 +14,6 @@ const BezierLineChart = (props) => {
 
   return (
     <View>
-      <Text>Bezier Line Chart View</Text>
       <LineChart
         data={{
           labels: label,
