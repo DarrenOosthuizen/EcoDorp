@@ -15,7 +15,6 @@ const BarLineChart = (props) => {
 
   return (
     <View>
-      <Text>Bar Line Chart View</Text>
       <BarChart
         data={{
           labels: label,
@@ -25,11 +24,11 @@ const BarLineChart = (props) => {
             },
           ],
         }}
-        width={Dimensions.get("window").width} // from react-native
+        width={Dimensions.get("window").width * (datas.length/7)} // from react-native
         height={220}
         chartConfig={{
-          backgroundGradientFrom: "#339966",
-          backgroundGradientTo: "#339966",
+          backgroundGradientFrom: "#0D8735",
+          backgroundGradientTo: "#0D8735",
           decimalPlaces: 2, // optional, defaults to 2dp
           color: (opacity = 1) => `rgba(255,255,255, ${opacity})`,
           style: {
