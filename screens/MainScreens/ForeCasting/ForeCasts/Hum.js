@@ -6,10 +6,10 @@ import {
   StyleSheet,
   useWindowDimensions,
   ActivityIndicator,
-  ScrollView
+  ScrollView,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import * as Animatable from "react-native-animatable";
 import BezierLineChart from "../../../Diagrams/BarChart";
 import { Host } from "../../../env";
 
@@ -27,12 +27,9 @@ const ForeCast = (props) => {
   var forecastpred = [];
   var forecasthead = [];
 
-
-
   useEffect(() => {
     GetSensorForeCast();
   }, []);
-
 
   const GetSensorForeCast = async function () {
     try {
@@ -54,7 +51,6 @@ const ForeCast = (props) => {
       });
       res = await res.json();
 
-
       var promise = GetFC();
 
       function GetFC() {
@@ -75,12 +71,11 @@ const ForeCast = (props) => {
         });
       }
 
-      promise
-        .then((val1) => {
-          setforeCastData(val1.forecastpred);
-          setforeCastLabel(val1.forecasthead);
-          SetforeCastHum(true);
-        })
+      promise.then((val1) => {
+        setforeCastData(val1.forecastpred);
+        setforeCastLabel(val1.forecasthead);
+        SetforeCastHum(true);
+      });
 
       async function GetSensorReading(value) {
         try {
@@ -109,8 +104,32 @@ const ForeCast = (props) => {
 
   if (foreCastHum == false) {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size={70} color="#2DAF33" />
+      <View style={styles.actindcon}>
+        <View style={styles.LabelCon}>
+          <Animatable.View
+            style={styles.IconCon}
+            animation="pulse"
+            duration={5000}
+            easing="ease-out"
+            iterationCount="infinite"
+          ></Animatable.View>
+          <Animatable.View
+            style={styles.TextCon}
+            animation="pulse"
+            duration={5000}
+            easing="ease-out"
+            iterationCount="infinite"
+          ></Animatable.View>
+        </View>
+        <Animatable.View
+          style={styles.GraphCon}
+          animation="pulse"
+          duration={5000}
+          easing="ease-out"
+          iterationCount="infinite"
+        >
+          <ActivityIndicator size={70} color="#2DAF33" style={styles.actind} />
+        </Animatable.View>
       </View>
     );
   }
@@ -133,5 +152,37 @@ export default ForeCast;
 const styles = StyleSheet.create({
   container: {
     width: "100%",
+  },
+
+  actindcon: {
+    height: 180,
+    margin: "5%",
+  },
+  actind: {
+    alignSelf: "center",
+  },
+  LabelCon: {
+    height: "20%",
+    flexDirection: "row",
+  },
+  IconCon: {
+    backgroundColor: "#B1B0B6",
+    height: "100%",
+    width: "10%",
+    borderRadius: 100,
+  },
+  TextCon: {
+    backgroundColor: "#B1B0B6",
+    height: "100%",
+    width: "80%",
+    borderRadius: 50,
+    marginLeft: "5%",
+  },
+  GraphCon: {
+    justifyContent: "center",
+    backgroundColor: "#B1B0B6",
+    height: "80%",
+    borderRadius: 20,
+    marginTop: "5%",
   },
 });
