@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Animatable from "react-native-animatable";
-
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import BezierLineChart from "../../../Diagrams/BarChart";
 import { Host } from "../../../env";
 
@@ -136,14 +136,23 @@ const ForeCast = (props) => {
   }
 
   return (
-    <View style={styles.container}>
-      {/* Displaying Temperature */}
-      <Text>AIR</Text>
-      <BezierLineChart
-        style={styles.test}
-        labelheading={foreCastLabel}
-        datavalue={foreCastData}
-      />
+    <View style={styles.ForeContainer}>
+      <View style={styles.ForeHeading}>
+        <Animatable.View style={styles.ForeIcon}>
+          <MaterialCommunityIcons name="speedometer" color={"#FFF"} size={36} />
+        </Animatable.View>
+        <Animatable.View style={styles.ForeText}>
+          <Text style={styles.ForeTextLabel}>Air Pressure Forecast</Text>
+        </Animatable.View>
+      </View>
+      <Animatable.View style={styles.ForeGraph}>
+        <ScrollView horizontal={true}>
+          <BezierLineChart
+            labelheading={foreCastLabel}
+            datavalue={foreCastData}
+          />
+        </ScrollView>
+      </Animatable.View>
     </View>
   );
 };
@@ -185,5 +194,40 @@ const styles = StyleSheet.create({
     height: "80%",
     borderRadius: 20,
     marginTop: "5%",
+  },
+  ForeContainer: {
+    height: 290,
+    marginLeft: "2%",
+    marginTop: "2%",
+    marginRight: "2%",
+  },
+  ForeHeading: {
+    flexDirection: "row",
+    height: 40,
+  },
+  ForeIcon: {
+    backgroundColor: "#61B522",
+    borderRadius: 100,
+    height: 40,
+    width: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "center",
+  },
+  ForeGraph: {
+    height: 250,
+  },
+  ForeText: {
+    backgroundColor: "#61B522",
+    width: "85%",
+    marginLeft: 10,
+    borderRadius: 60,
+    justifyContent: "center",
+    paddingLeft: 20,
+  },
+  ForeTextLabel: {
+    color: "#fff",
+    fontSize: 25,
+    fontWeight: "bold",
   },
 });
