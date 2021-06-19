@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Reading from "../DataScreen";
-
 import NewForecast from "./ForeCasts/ForeCast";
 import {
   View,
