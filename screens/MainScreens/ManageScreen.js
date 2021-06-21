@@ -7,13 +7,16 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   StatusBar,
+  Text,
 } from "react-native";
 import OutdoorDevice from "./Devices/OutdoorDevice";
 import IndoorDevice from "./Devices/IndoorDevice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {Host} from "../env"
+import { Host } from "../env";
+import AddSensor from "./Manage/AddSensor";
 
 const ManageScreen = ({ navigation }) => {
+  const [shouldRender, setShouldRender] = useState(false);
   const [result, setResult] = useState([]);
   var userToken;
   var res = [];
@@ -22,7 +25,6 @@ const ManageScreen = ({ navigation }) => {
 
   useEffect(() => {
     GetSensorData();
-    SetloginState(true);
   }, []);
 
   const sleep = (ms) => {
@@ -52,7 +54,12 @@ const ManageScreen = ({ navigation }) => {
         },
       });
       res = await res.json();
-
+      if (res.length == 0) {
+        setShouldRender(false);
+        SetloginState(true);
+      } else {
+        setShouldRender(true);
+      }
       const mapLoop = async (_) => {
         const promises = res.map(async (element) => {
           const senObj = await getSensorObjects();
@@ -70,9 +77,7 @@ const ManageScreen = ({ navigation }) => {
         try {
           userToken = await AsyncStorage.getItem("userToken");
           let resultsen = await fetch(
-            Host + "/sensors/" +
-              value +
-              "/data/last",
+            Host + "/sensors/" + value + "/data/last",
             {
               method: "GET",
               headers: {
@@ -148,6 +153,7 @@ const ManageScreen = ({ navigation }) => {
         } else {
           Reading++;
         }
+        SetloginState(true);
         return Reading;
       };
     } catch (e) {}
@@ -161,40 +167,67 @@ const ManageScreen = ({ navigation }) => {
     );
   }
 
-  return (
-    <ScrollView>
-      <View style={styles.container}>
-        {result.map((sensor) =>
-          sensor.device_name == "b790" ? (
-            <OutdoorDevice
-              key={sensor.id}
-              text={sensor.device_name}
-              heading={sensor.name}
-              reading={sensor.reading}
-              object={sensor}
-            />
-          ) : (
-            <IndoorDevice
-              key={sensor.id}
-              text={sensor.device_name}
-              heading={sensor.name}
-              reading={sensor.reading}
-              object={sensor}
-            />
-          )
-        )}
-      </View>
-    </ScrollView>
-  );
+  function RenderDisplay() {
+    if (shouldRender == false) {
+      return (
+        <View style={{ height: "100%", width: "100%" }}>
+          <AddSensor />
+          <View style={styles.cont}>
+            <Text style={styles.texthead}>Sensors can be added above</Text>
+          </View>
+        </View>
+      );
+    } else {
+      return (
+          <View style={styles.container}>
+            <View style={styles.devicecontainer}>
+              <ScrollView>
+              {result.map((sensor) =>
+                sensor.device_name == "Buiten 1" ? (
+                  <OutdoorDevice
+                    key={sensor.id}
+                    text={sensor.device_name}
+                    heading={sensor.name}
+                    reading={sensor.reading}
+                    object={sensor}
+                  />
+                ) : (
+                  <IndoorDevice
+                    key={sensor.id}
+                    text={sensor.device_name}
+                    heading={sensor.name}
+                    reading={sensor.reading}
+                    object={sensor}
+                  />
+                )
+              )}
+              </ScrollView>
+            </View>
+            <View style={styles.addsen}>
+              <AddSensor />
+            </View>
+          </View>
+      );
+    }
+  }
+
+  return <View>{RenderDisplay()}</View>;
 };
 
 export default ManageScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+  container : {
+    height : '100%',
+    width : '100%',
+  },
+  devicecontainer: {
+    height: "90%",
+    width : '100%', 
+  },
+  scrollcontainer : {
+    height : '100%',
+    width : '100%', 
   },
   modalcon: {
     backgroundColor: "#fff",
@@ -202,5 +235,30 @@ const styles = StyleSheet.create({
   },
   modalclose: {
     backgroundColor: "#2DAF33",
+  },
+  cont: {
+    height: "100%",
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  texthead: {
+    fontSize: 28,
+  },
+  textpar: {
+    fontSize: 18,
+  },
+  addsen: {
+    justifyContent : "flex-end",
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 0,
+      height: 0
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4.84,
+    elevation: 2
+
+
   },
 });
