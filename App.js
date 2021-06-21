@@ -114,7 +114,7 @@ const App = () => {
       signIn: async (userName, logintoken) => {
         try {
           await AsyncStorage.setItem("userToken", logintoken);
-          GetUserData()
+          GetUserData();
         } catch (e) {
           console.log(e);
         }
@@ -142,44 +142,47 @@ const App = () => {
   );
 
   useEffect(() => {
-    GetUserData()
+    GetUserData();
   }, []);
 
   const GetUserData = async function () {
     try {
       let userToken;
       userToken = null;
+      
       try {
         userToken = await AsyncStorage.getItem("userToken");
         if (userToken != null) {
-          let result = await fetch(Host + "/user", {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-              Authorization: userToken,
-            },
-          });
-
-          result = await result.json();
-
-          if (
-            result.message == "Token blacklisted. Please log in again" ||
-            result.message == "Invalid token. Please log in again." ||
-            result.message == "User not found"
-          ) {
-            await AsyncStorage.removeItem("userToken");
-            alert("Credentials Expired. Please Login again!");
-            setisValidUser(false);
-          } else {
-            setisValidUser(true);
+          try {
+            let result = await fetch(Host + "/user", {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                Authorization: userToken,
+              },
+            });
+            
+            result = await result.json();
+            if (
+              result.message == "Token blacklisted. Please log in again" ||
+              result.message == "Invalid token. Please log in again." ||
+              result.message == "User not found"
+            ) {
+              await AsyncStorage.removeItem("userToken");
+              alert("Credentials Expired. Please Login again!");
+              setisValidUser(false);
+            } else {
+              setisValidUser(true);
+            }
+          } catch (e) {
+            console.log(e);
           }
         }
       } catch (e) {
         console.log(e);
       }
       dispatch({ type: "RETRIEVE_TOKEN", token: userToken });
-
     } catch (e) {
       console.log(e);
     }
