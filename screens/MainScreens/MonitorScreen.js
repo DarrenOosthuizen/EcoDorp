@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Button, StyleSheet, ScrollView } from "react-native";
+import { View, Text, Button, StyleSheet, ScrollView,Image } from "react-native";
 import BottomNav from "./Monitor/BottomNavigator";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Host } from "../env";
+import RobotImage from "../../assets/Robot.png"
 
 const MonitorScreen = (props) => {
   const [shouldRender, setShouldRender] = useState(false);
@@ -35,7 +36,10 @@ const MonitorScreen = (props) => {
     if (shouldRender == false) {
       return (
         <View style={styles.cont}>
-          <Text style={styles.texthead}>No sensors linked to User</Text>
+          <Text style={styles.texthead}>OOPS</Text>
+          <Text style={styles.textsubhead}>SENSOR NOT DETECTED</Text>
+          <Image source={RobotImage}/>
+          <Text style={styles.textlabel}>LOOKS LIKE YOU DONT HAVE ANY SENSORS</Text>
           <Text style={styles.textpar}>Please add Sensor under Manage Devices Tab</Text>
         </View>
       );
@@ -61,13 +65,38 @@ const styles = StyleSheet.create({
   cont: {
     height: "100%",
     width: "100%",
+    textAlign : "center",
+    backgroundColor : "#fff",
     justifyContent: 'center',
-    alignItems : 'center'
+
   },
   texthead : {
-    fontSize : 28
+    fontSize : 70,
+    fontWeight : "bold",
+    alignSelf  : 'center',
+    color : '#0D8735'
+    
+  },
+  textsubhead : {
+    fontSize : 25,
+    fontWeight : "bold",
+    alignSelf  : 'center',
+    color : '#3A4234'
   },
   textpar : {
-    fontSize : 18
+    fontSize : 15,
+    alignSelf  : 'center',
+    position : "absolute",
+    bottom : 10,
+    color : '#0D8735'
+    
+    
   },
+  textlabel : {
+    fontSize : 17,
+    alignSelf  : 'center',
+    fontWeight : "bold",
+    color : '#61B522',
+  },
+  
 });

@@ -7,10 +7,12 @@ import {
   ScrollView,
   Alert,
   StatusBar,
+  Image,
 } from "react-native";
 import BottomTab from "./SensorData/BottomNavigatorData";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Host } from "../env";
+import RobotImage from "../../assets/Robot.png";
 
 const DataScreen = () => {
   const [shouldRender, setShouldRender] = useState(false);
@@ -43,23 +45,27 @@ const DataScreen = () => {
     if (shouldRender == false) {
       return (
         <View style={styles.cont}>
-          <Text style={styles.texthead}>No sensors linked to User</Text>
-          <Text style={styles.textpar}>Please add Sensor under Manage Devices Tab</Text>
+          <Text style={styles.texthead}>OOPS</Text>
+          <Text style={styles.textsubhead}>SENSOR NOT DETECTED</Text>
+          <Image source={RobotImage} />
+          <Text style={styles.textlabel}>
+            LOOKS LIKE YOU DONT HAVE ANY SENSORS
+          </Text>
+          <Text style={styles.textpar}>
+            Please add Sensor under Manage Devices Tab
+          </Text>
         </View>
       );
     } else {
       return (
         <View style={styles.container}>
-      <BottomTab />
-    </View>
+          <BottomTab />
+        </View>
       );
     }
   }
 
-
-  return (
-    <View>{RenderDisplay()}</View>
-  );
+  return <View>{RenderDisplay()}</View>;
 };
 
 export default DataScreen;
@@ -72,13 +78,33 @@ const styles = StyleSheet.create({
   cont: {
     height: "100%",
     width: "100%",
-    justifyContent: 'center',
-    alignItems : 'center'
+    textAlign: "center",
+    backgroundColor: "#fff",
+    justifyContent: "center",
   },
-  texthead : {
-    fontSize : 28
+  texthead: {
+    fontSize: 70,
+    fontWeight: "bold",
+    alignSelf: "center",
+    color: "#0D8735",
   },
-  textpar : {
-    fontSize : 18
+  textsubhead: {
+    fontSize: 25,
+    fontWeight: "bold",
+    alignSelf: "center",
+    color: "#3A4234",
+  },
+  textpar: {
+    fontSize: 15,
+    alignSelf: "center",
+    position: "absolute",
+    bottom: 10,
+    color: "#0D8735",
+  },
+  textlabel: {
+    fontSize: 17,
+    alignSelf: "center",
+    fontWeight: "bold",
+    color: "#61B522",
   },
 });
