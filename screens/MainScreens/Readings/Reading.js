@@ -199,7 +199,7 @@ const Reading = (props) => {
           <Text style={styles.ReadingIndexHeading}> Virus Index</Text>
         </View>
         <View style={styles.ReadingIndexIndicator}>
-          <ReadingVirus value={props.virus} />
+          <ReadingVirus value={ChangeValue(props.virus)} />
         </View>
         <View style={styles.ReadingIndexValue}>
           <Text
@@ -208,7 +208,7 @@ const Reading = (props) => {
               styles.ReadingIndexValueText,
             ]}
           >
-            {props.virus}
+            {ChangeValue(props.virus)}
           </Text>
           <Text
             style={[
