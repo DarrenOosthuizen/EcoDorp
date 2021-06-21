@@ -21,7 +21,10 @@ import TVOC from "./Tvoc";
 const SensorData = (props) => {
   return (
     <View style={styles.container}>
-      <ScrollView>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+      >
         {/* Displaying Temperature */}
         <Temperature sensorID={props.sensorID} dataID={props.dataID} />
 

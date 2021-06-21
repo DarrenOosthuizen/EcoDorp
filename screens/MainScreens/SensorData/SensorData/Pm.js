@@ -180,7 +180,11 @@ const SensorData = (props) => {
   function RenderGraph() {
     if (props.dataID == "Month") {
       return (
-        <ScrollView horizontal={true}>
+        <ScrollView
+          horizontal={true}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+        >
           <BezierLineChart
             labelheading={sensorDataLabelMon}
             datavalue={sensorDataReadingMon}
@@ -189,7 +193,11 @@ const SensorData = (props) => {
       );
     } else if (props.dataID == "Week") {
       return (
-        <ScrollView horizontal={true}>
+        <ScrollView
+          horizontal={true}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+        >
           <BezierLineChart
             labelheading={sensorDataLabelWeek}
             datavalue={sensorDataReadingWeek}
@@ -198,7 +206,11 @@ const SensorData = (props) => {
       );
     } else {
       return (
-        <ScrollView horizontal={true}>
+        <ScrollView
+          horizontal={true}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+        >
           <BezierLineChart
             labelheading={sensorDataLabelDay}
             datavalue={sensorDataReadingDay}
