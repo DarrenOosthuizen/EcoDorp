@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, StatusBar} from "react-native";
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 import {
   useTheme,
@@ -68,11 +68,12 @@ export const DrawerContent = (props) => {
   const paperTheme = useTheme();
   return (
     <View style={{ flex: 1 }}>
+      <StatusBar backgroundColor="#0D8735" barStyle="light-content" />
       <DrawerContentScrollView {...props}>
         <View style={styles.drawerContent}>
           <View style={styles.userInfoSection}>
             <View style={{ flexDirection: "row", marginTop: 15 }}>
-              <IconF5 name="user" solid color="#339966" size={50} />
+              <IconF5 name="user" solid color="#0D8735" size={50} />
               <View style={{ marginLeft: 15, flexDirection: "column" }}>
                 <Title style={styles.title}>{userData.name}</Title>
                 <Caption style={styles.caption}>
