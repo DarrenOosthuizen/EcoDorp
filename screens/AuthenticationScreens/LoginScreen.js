@@ -118,7 +118,7 @@ const LoginScreen = ({ route, navigation }) => {
     });
     result = await result.json();
     if (
-      result.message == "Email or password does not match" &&
+      (result.message == "Email or password does not match" || result.message == "User not found") &&
       result.token == null
     ) {
       setData({
