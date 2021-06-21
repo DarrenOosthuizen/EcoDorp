@@ -16,7 +16,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Icon from "react-native-vector-icons/Ionicons";
 import { AuthContext } from "../../components/context";
-import {Host} from "../env"
+import { Host } from "../env";
 
 import IconF5 from "react-native-vector-icons/FontAwesome5";
 
@@ -48,11 +48,13 @@ export const DrawerContent = (props) => {
       },
     });
     result = await result.json();
-    if (result.message == "Token blacklisted. Please log in again" || result.message == "Invalid token. Please log in again") {
-      alert("Credentials Expired. Please Login again!");
+    if (
+      result.message == "Token blacklisted. Please log in again" ||
+      result.message == "Invalid token. Please log in again."
+    ) {
       signOut();
+      alert("Credentials Expired. Please Login again!");
     }
-
 
     setUserData({
       ...userData,
@@ -60,10 +62,7 @@ export const DrawerContent = (props) => {
       name: result.name,
       totalsensors: result.sensors.length,
     });
-  
   }
-
-  setInterval(getUserData, 60000);
 
   const { signOut, toggleTheme } = React.useContext(AuthContext);
   const paperTheme = useTheme();
@@ -121,7 +120,7 @@ export const DrawerContent = (props) => {
               icon={({ color, size }) => (
                 <Icon name="cloud-outline" color={color} size={size} />
               )}
-              label="Fore Casting"
+              label="Forecasting"
               onPress={() => {
                 props.navigation.navigate("ForeCasting");
               }}
