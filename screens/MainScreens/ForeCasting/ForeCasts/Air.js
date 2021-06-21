@@ -146,7 +146,11 @@ const ForeCast = (props) => {
         </Animatable.View>
       </View>
       <Animatable.View style={styles.ForeGraph}>
-        <ScrollView horizontal={true}>
+        <ScrollView
+          horizontal={true}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+        >
           <BezierLineChart
             labelheading={foreCastLabel}
             datavalue={foreCastData}

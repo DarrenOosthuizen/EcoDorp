@@ -24,10 +24,13 @@ import TVOC from "./Tvoc";
 const ForeCast = (props) => {
   return (
     <View style={styles.container}>
-      <ScrollView>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+      >
         {/* Displaying Temperature */}
         <Temperature sensorID={props.sensorID} />
-        
+
         {/* Displaying Humidity */}
         <Humidity sensorID={props.sensorID} />
 
@@ -60,5 +63,4 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
   },
-  
 });

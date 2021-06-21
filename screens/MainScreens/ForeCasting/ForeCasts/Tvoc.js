@@ -137,23 +137,27 @@ const ForeCast = (props) => {
 
   return (
     <View style={styles.ForeContainer}>
-    <View style={styles.ForeHeading}>
-      <Animatable.View style={styles.ForeIcon}>
-        <MaterialCommunityIcons name="leaf" color={"#FFF"} size={36} />
-      </Animatable.View>
-      <Animatable.View style={styles.ForeText}>
-        <Text style={styles.ForeTextLabel}>TVOC Forecast</Text>
+      <View style={styles.ForeHeading}>
+        <Animatable.View style={styles.ForeIcon}>
+          <MaterialCommunityIcons name="leaf" color={"#FFF"} size={36} />
+        </Animatable.View>
+        <Animatable.View style={styles.ForeText}>
+          <Text style={styles.ForeTextLabel}>TVOC Forecast</Text>
+        </Animatable.View>
+      </View>
+      <Animatable.View style={styles.ForeGraph}>
+        <ScrollView
+          horizontal={true}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+        >
+          <BezierLineChart
+            labelheading={foreCastLabel}
+            datavalue={foreCastData}
+          />
+        </ScrollView>
       </Animatable.View>
     </View>
-    <Animatable.View style={styles.ForeGraph}>
-      <ScrollView horizontal={true}>
-      <BezierLineChart
-        labelheading={foreCastLabel}
-        datavalue={foreCastData}
-      />
-      </ScrollView>
-    </Animatable.View>
-  </View>
   );
 };
 
@@ -197,9 +201,9 @@ const styles = StyleSheet.create({
   },
   ForeContainer: {
     height: 290,
-    marginLeft :'2%',
-    marginTop : '2%',
-    marginRight : '2%'
+    marginLeft: "2%",
+    marginTop: "2%",
+    marginRight: "2%",
   },
   ForeHeading: {
     flexDirection: "row",
@@ -208,27 +212,26 @@ const styles = StyleSheet.create({
   ForeIcon: {
     backgroundColor: "#61B522",
     borderRadius: 100,
-    height : 40,
+    height: 40,
     width: 40,
-    justifyContent :'center',
-    alignItems: 'center',
-    alignSelf : 'center',
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "center",
   },
-  ForeGraph : {
+  ForeGraph: {
     height: 250,
   },
-  ForeText :
-  {
+  ForeText: {
     backgroundColor: "#61B522",
-    width : '85%',
-    marginLeft : 10,
+    width: "85%",
+    marginLeft: 10,
     borderRadius: 60,
-    justifyContent: 'center',
-    paddingLeft : 20
+    justifyContent: "center",
+    paddingLeft: 20,
   },
   ForeTextLabel: {
-    color : "#fff",
+    color: "#fff",
     fontSize: 25,
-    fontWeight : 'bold'
-  }
+    fontWeight: "bold",
+  },
 });
