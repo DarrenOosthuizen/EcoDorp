@@ -7,6 +7,7 @@ import {
   StyleSheet,
   useWindowDimensions,
   ScrollView,
+  Dimensions,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
@@ -17,6 +18,7 @@ import { Host } from "../../env";
 const Tab = createMaterialTopTabNavigator();
 
 function ForeCastTab() {
+  const [sensorCount, setSensorCount] = useState(1);
   var userToken;
   var res = [];
   var nam = [];
@@ -50,7 +52,7 @@ function ForeCastTab() {
       res = await res.json();
 
       //Setting Drop Down List
-
+      let value = 0;
       res.forEach((element) => {
         //Populating array with Sensors ID
         let obj = {
@@ -60,7 +62,15 @@ function ForeCastTab() {
 
         nam.push(obj);
         setSensorItems(nam);
+        value++;
       });
+      if(value>3)
+      {
+        setSensorCount(3)
+      }else
+      {
+        setSensorCount(value)
+      }
     } catch (e) {
       console.log(e);
     }
@@ -75,7 +85,7 @@ function ForeCastTab() {
         scrollEnabled: true,
         pressColor: "#61B522",
         tabStyle: {
-          width: 150,
+          width: Dimensions.get("window").width / sensorCount,
           borderLeftWidth: 1,
           borderLeftColor: "#d7d8d8",
         },
@@ -99,7 +109,7 @@ function ForeCastTab() {
             tabBarLabel: element.label,
             tabBarIcon: () => (
               <MaterialCommunityIcons
-                name="thermometer"
+                name="antenna"
                 color={"#0D8735"}
                 size={26}
               />
