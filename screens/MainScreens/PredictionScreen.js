@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Button, StyleSheet, ScrollView } from "react-native";
-import BottonNav from "./Predictions/BottomNavigator";
+import BottomNav from "./Predictions/BottomNavigator";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Host } from "../env";
 
