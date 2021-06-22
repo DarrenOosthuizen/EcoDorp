@@ -1,10 +1,15 @@
-import React from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { View, Text, Button, StyleSheet, TouchableOpacity } from "react-native";
 import ReadingSlider from "./ReadingSlider";
 import ReadingVirus from "./ReadingVirus";
 import Icon from "react-native-vector-icons/FontAwesome5";
+import ModalMonitor from "../Monitor/MonitorModal";
 
 const Reading = (props) => {
+  const [showModal, setShowModal] = useState(false);
+  const openModal = () => {
+    setShowModal((prev) => !prev);
+  };
   let GreenColor = "#51D257";
   let RedColor = "#EF1D10";
 
@@ -193,213 +198,248 @@ const Reading = (props) => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.ReadingIndex}>
-        <View style={styles.ReadingIndexText}>
-          <Text style={styles.ReadingIndexHeading}> Virus Index</Text>
+    <View>
+      <View style={styles.container}>
+        <View style={styles.ReadingIndex}>
+          <View style={styles.ReadingIndexText}>
+            <Text style={styles.ReadingIndexHeading}> Virus Index</Text>
+            {props.monitor ? (
+            <TouchableOpacity onPress={openModal}>
+              <Icon
+                name="question-circle"
+                size={20}
+                style={styles.HelpIcon}
+              ></Icon>
+            </TouchableOpacity>) : (null)}
+          </View>
+          <View style={styles.ReadingIndexIndicator}>
+            <ReadingVirus value={ChangeValue(props.virus)} />
+          </View>
+          <View style={styles.ReadingIndexValue}>
+            <Text
+              style={[
+                { color: GetColorVirus(props.virus) },
+                styles.ReadingIndexValueText,
+              ]}
+            >
+              {ChangeValue(props.virus)}
+            </Text>
+            <Text
+              style={[
+                { color: GetColorVirus(props.virus) },
+                styles.ReadingIndexValuePer,
+              ]}
+            >
+              /10
+            </Text>
+          </View>
         </View>
-        <View style={styles.ReadingIndexIndicator}>
-          <ReadingVirus value={ChangeValue(props.virus)} />
+        <View style={styles.ReadingUnit}>
+          <View style={styles.ReadingText}>
+            <Icon
+              name="thermometer"
+              size={20}
+              style={styles.ReadingIcon}
+            ></Icon>
+            <Text style={styles.ReadingHeading}> Temperature</Text>
+          </View>
+          <View style={styles.ReadingSlider}>
+            <ReadingSlider
+              value={GetTempValue(props.temp)}
+              color={SetTempColor(props.temp)}
+            />
+          </View>
+          <View style={styles.ReadingValue}>
+            <Text
+              style={[
+                { color: SetTempColor(props.temp) },
+                styles.ReadingValueText,
+              ]}
+            >
+              {ChangeValue(props.temp)}°C
+            </Text>
+          </View>
         </View>
-        <View style={styles.ReadingIndexValue}>
-          <Text
-            style={[
-              { color: GetColorVirus(props.virus) },
-              styles.ReadingIndexValueText,
-            ]}
-          >
-            {ChangeValue(props.virus)}
-          </Text>
-          <Text
-            style={[
-              { color: GetColorVirus(props.virus) },
-              styles.ReadingIndexValuePer,
-            ]}
-          >
-            /10
-          </Text>
+        <View style={styles.ReadingUnit}>
+          <View style={styles.ReadingText}>
+            <Icon name="tint" size={20} style={styles.ReadingIcon}></Icon>
+            <Text style={styles.ReadingHeading}> Humidity</Text>
+          </View>
+          <View style={styles.ReadingSlider}>
+            <ReadingSlider
+              value={GetHumValue(props.hum)}
+              color={SetHumColor(props.hum)}
+            />
+          </View>
+          <View style={styles.ReadingValue}>
+            <Text
+              style={[
+                { color: SetHumColor(props.hum) },
+                styles.ReadingValueText,
+              ]}
+            >
+              {ChangeValue(props.hum)}%
+            </Text>
+          </View>
+        </View>
+        <View style={styles.ReadingUnit}>
+          <View style={styles.ReadingText}>
+            <Icon name="cloudscale" size={20} style={styles.ReadingIcon}></Icon>
+            <Text style={styles.ReadingHeading}> Air Pressure</Text>
+          </View>
+          <View style={styles.ReadingSlider}>
+            <ReadingSlider
+              value={GetAirValue(props.air)}
+              color={SetAirColor(props.air)}
+            />
+          </View>
+          <View style={styles.ReadingValue}>
+            <Text
+              style={[
+                { color: SetAirColor(props.air) },
+                styles.ReadingValueText,
+              ]}
+            >
+              {ChangeValue(props.air)} hPa
+            </Text>
+          </View>
+        </View>
+        <View style={styles.ReadingUnit}>
+          <View style={styles.ReadingText}>
+            <Icon name="cloud" size={20} style={styles.ReadingIcon}></Icon>
+            <Text style={styles.ReadingHeading}> CO2</Text>
+          </View>
+          <View style={styles.ReadingSlider}>
+            <ReadingSlider
+              value={GetCO2Value(props.co2)}
+              color={SetCO2Color(props.co2)}
+            />
+          </View>
+          <View style={styles.ReadingValue}>
+            <Text
+              style={[
+                { color: SetCO2Color(props.co2) },
+                styles.ReadingValueText,
+              ]}
+            >
+              {ChangeValue(props.co2)} ppm
+            </Text>
+          </View>
+        </View>
+        <View style={styles.ReadingUnit}>
+          <View style={styles.ReadingText}>
+            <Icon name="leaf" size={20} style={styles.ReadingIcon}></Icon>
+            <Text style={styles.ReadingHeading}> TVOC</Text>
+          </View>
+          <View style={styles.ReadingSlider}>
+            <ReadingSlider
+              value={GetTVOCValue(props.tvoc)}
+              color={SetTVOCColor(props.tvoc)}
+            />
+          </View>
+          <View style={styles.ReadingValue}>
+            <Text
+              style={[
+                { color: SetTVOCColor(props.tvoc) },
+                styles.ReadingValueText,
+              ]}
+            >
+              {ChangeValue(props.tvoc)} ppb
+            </Text>
+          </View>
+        </View>
+        <View style={styles.ReadingUnit}>
+          <View style={styles.ReadingText}>
+            <Icon name="vial" size={20} style={styles.ReadingIcon}></Icon>
+            <Text style={styles.ReadingHeading}> PM2.5</Text>
+          </View>
+          <View style={styles.ReadingSlider}>
+            <ReadingSlider
+              value={GetPMValue(props.pm)}
+              color={SetPMColor(props.pm)}
+            />
+          </View>
+          <View style={styles.ReadingValue}>
+            <Text
+              style={[{ color: SetPMColor(props.pm) }, styles.ReadingValueText]}
+            >
+              {ChangeValue(props.pm)} µg/m3
+            </Text>
+          </View>
+        </View>
+        <View style={styles.ReadingUnit}>
+          <View style={styles.ReadingText}>
+            <Icon name="cloudsmith" size={20} style={styles.ReadingIcon}></Icon>
+            <Text style={styles.ReadingHeading}> CO</Text>
+          </View>
+          <View style={styles.ReadingSlider}>
+            <ReadingSlider
+              value={GetCOValue(props.co)}
+              color={SetCOColor(props.co)}
+            />
+          </View>
+          <View style={styles.ReadingValue}>
+            <Text
+              style={[{ color: SetCOColor(props.co) }, styles.ReadingValueText]}
+            >
+              {ChangeValue(props.co)} ppm
+            </Text>
+          </View>
+        </View>
+        <View style={styles.ReadingUnit}>
+          <View style={styles.ReadingText}>
+            <Icon name="hubspot" size={20} style={styles.ReadingIcon}></Icon>
+            <Text style={styles.ReadingHeading}> NO2</Text>
+          </View>
+          <View style={styles.ReadingSlider}>
+            <ReadingSlider
+              value={GetNO2Value(props.no2)}
+              color={SetNO2Color(props.no2)}
+            />
+          </View>
+          <View style={styles.ReadingValue}>
+            <Text
+              style={[
+                { color: SetNO2Color(props.no2) },
+                styles.ReadingValueText,
+              ]}
+            >
+              {ChangeValue(props.no2)} ppb
+            </Text>
+          </View>
+        </View>
+        <View style={styles.ReadingUnit}>
+          <View style={styles.ReadingText}>
+            <Icon name="globe" size={20} style={styles.ReadingIcon}></Icon>
+            <Text style={styles.ReadingHeading}> Ozone</Text>
+          </View>
+          <View style={styles.ReadingSlider}>
+            <ReadingSlider
+              value={GetOzoneValue(props.ozone)}
+              color={SetOZONEColor(props.ozone)}
+            />
+          </View>
+          <View style={styles.ReadingValue}>
+            <Text
+              style={[
+                { color: SetOZONEColor(props.ozone) },
+                styles.ReadingValueText,
+              ]}
+            >
+              {ChangeValue(props.ozone)} ppb
+            </Text>
+          </View>
         </View>
       </View>
-      <View style={styles.ReadingUnit}>
-        <View style={styles.ReadingText}>
-          <Icon name="thermometer" size={20} style={styles.ReadingIcon}></Icon>
-          <Text style={styles.ReadingHeading}> Temperature</Text>
-        </View>
-        <View style={styles.ReadingSlider}>
-          <ReadingSlider
-            value={GetTempValue(props.temp)}
-            color={SetTempColor(props.temp)}
-          />
-        </View>
-        <View style={styles.ReadingValue}>
-          <Text
-            style={[
-              { color: SetTempColor(props.temp) },
-              styles.ReadingValueText,
-            ]}
-          >
-            {ChangeValue(props.temp)}°C
-          </Text>
-        </View>
+
+      <View>
+        <ModalMonitor
+          showModal={showModal}
+          setShowModal={setShowModal}
+        />
       </View>
-      <View style={styles.ReadingUnit}>
-        <View style={styles.ReadingText}>
-          <Icon name="tint" size={20} style={styles.ReadingIcon}></Icon>
-          <Text style={styles.ReadingHeading}> Humidity</Text>
-        </View>
-        <View style={styles.ReadingSlider}>
-          <ReadingSlider
-            value={GetHumValue(props.hum)}
-            color={SetHumColor(props.hum)}
-          />
-        </View>
-        <View style={styles.ReadingValue}>
-          <Text
-            style={[{ color: SetHumColor(props.hum) }, styles.ReadingValueText]}
-          >
-            {ChangeValue(props.hum)}%
-          </Text>
-        </View>
-      </View>
-      <View style={styles.ReadingUnit}>
-        <View style={styles.ReadingText}>
-          <Icon name="cloudscale" size={20} style={styles.ReadingIcon}></Icon>
-          <Text style={styles.ReadingHeading}> Air Pressure</Text>
-        </View>
-        <View style={styles.ReadingSlider}>
-          <ReadingSlider
-            value={GetAirValue(props.air)}
-            color={SetAirColor(props.air)}
-          />
-        </View>
-        <View style={styles.ReadingValue}>
-          <Text
-            style={[{ color: SetAirColor(props.air) }, styles.ReadingValueText]}
-          >
-            {ChangeValue(props.air)} hPa
-          </Text>
-        </View>
-      </View>
-      <View style={styles.ReadingUnit}>
-        <View style={styles.ReadingText}>
-          <Icon name="cloud" size={20} style={styles.ReadingIcon}></Icon>
-          <Text style={styles.ReadingHeading}> CO2</Text>
-        </View>
-        <View style={styles.ReadingSlider}>
-          <ReadingSlider
-            value={GetCO2Value(props.co2)}
-            color={SetCO2Color(props.co2)}
-          />
-        </View>
-        <View style={styles.ReadingValue}>
-          <Text
-            style={[{ color: SetCO2Color(props.co2) }, styles.ReadingValueText]}
-          >
-            {ChangeValue(props.co2)} ppm
-          </Text>
-        </View>
-      </View>
-      <View style={styles.ReadingUnit}>
-        <View style={styles.ReadingText}>
-          <Icon name="leaf" size={20} style={styles.ReadingIcon}></Icon>
-          <Text style={styles.ReadingHeading}> TVOC</Text>
-        </View>
-        <View style={styles.ReadingSlider}>
-          <ReadingSlider
-            value={GetTVOCValue(props.tvoc)}
-            color={SetTVOCColor(props.tvoc)}
-          />
-        </View>
-        <View style={styles.ReadingValue}>
-          <Text
-            style={[
-              { color: SetTVOCColor(props.tvoc) },
-              styles.ReadingValueText,
-            ]}
-          >
-            {ChangeValue(props.tvoc)} ppb
-          </Text>
-        </View>
-      </View>
-      <View style={styles.ReadingUnit}>
-        <View style={styles.ReadingText}>
-          <Icon name="vial" size={20} style={styles.ReadingIcon}></Icon>
-          <Text style={styles.ReadingHeading}> PM2.5</Text>
-        </View>
-        <View style={styles.ReadingSlider}>
-          <ReadingSlider
-            value={GetPMValue(props.pm)}
-            color={SetPMColor(props.pm)}
-          />
-        </View>
-        <View style={styles.ReadingValue}>
-          <Text
-            style={[{ color: SetPMColor(props.pm) }, styles.ReadingValueText]}
-          >
-            {ChangeValue(props.pm)} µg/m3
-          </Text>
-        </View>
-      </View>
-      <View style={styles.ReadingUnit}>
-        <View style={styles.ReadingText}>
-          <Icon name="cloudsmith" size={20} style={styles.ReadingIcon}></Icon>
-          <Text style={styles.ReadingHeading}> CO</Text>
-        </View>
-        <View style={styles.ReadingSlider}>
-          <ReadingSlider
-            value={GetCOValue(props.co)}
-            color={SetCOColor(props.co)}
-          />
-        </View>
-        <View style={styles.ReadingValue}>
-          <Text
-            style={[{ color: SetCOColor(props.co) }, styles.ReadingValueText]}
-          >
-            {ChangeValue(props.co)} ppm
-          </Text>
-        </View>
-      </View>
-      <View style={styles.ReadingUnit}>
-        <View style={styles.ReadingText}>
-          <Icon name="hubspot" size={20} style={styles.ReadingIcon}></Icon>
-          <Text style={styles.ReadingHeading}> NO2</Text>
-        </View>
-        <View style={styles.ReadingSlider}>
-          <ReadingSlider
-            value={GetNO2Value(props.no2)}
-            color={SetNO2Color(props.no2)}
-          />
-        </View>
-        <View style={styles.ReadingValue}>
-          <Text
-            style={[{ color: SetNO2Color(props.no2) }, styles.ReadingValueText]}
-          >
-            {ChangeValue(props.no2)} ppb
-          </Text>
-        </View>
-      </View>
-      <View style={styles.ReadingUnit}>
-        <View style={styles.ReadingText}>
-          <Icon name="globe" size={20} style={styles.ReadingIcon}></Icon>
-          <Text style={styles.ReadingHeading}> Ozone</Text>
-        </View>
-        <View style={styles.ReadingSlider}>
-          <ReadingSlider
-            value={GetOzoneValue(props.ozone)}
-            color={SetOZONEColor(props.ozone)}
-          />
-        </View>
-        <View style={styles.ReadingValue}>
-          <Text
-            style={[
-              { color: SetOZONEColor(props.ozone) },
-              styles.ReadingValueText,
-            ]}
-          >
-            {ChangeValue(props.ozone)} ppb
-          </Text>
-        </View>
-      </View>
+
+              
     </View>
   );
 };
@@ -417,7 +457,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   ReadingUnit: {
-    marginLeft: '2%',
+    marginLeft: "2%",
     height: "8%",
     flexDirection: "row",
     alignItems: "center",
@@ -452,15 +492,21 @@ const styles = StyleSheet.create({
   ReadingIcon: {
     width: 25,
   },
+  HelpIcon: {
+    marginTop: 6,
+  },
   ReadingIndexHeading: {
     color: "#000",
     fontSize: 30,
     fontWeight: "bold",
+    marginRight: 2,
   },
   ReadingIndexText: {
     width: "55%",
     paddingLeft: 5,
     justifyContent: "center",
+    flexDirection: "row",
+    alignItems: "center",
   },
   ReadingIndexValueText: {
     fontSize: 45,
