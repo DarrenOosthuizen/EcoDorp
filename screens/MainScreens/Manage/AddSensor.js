@@ -8,27 +8,38 @@ import {
   TouchableOpacity,
 } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-
+import AddModal from './ManageModal'
 const AddSensor = (props) => {
-    function AddNewSensor() {
-        alert("wdawd");
-    }
-    
+
+  const [showModal, setShowModal] = useState(false);
+  const openModal = () => {
+    setShowModal((prev) => !prev);
+  };
+
+
   return (
-    <View style={styles.container}>
-      <View style={styles.textcontainer}>
-        <Text style={styles.textlabel}>Add New Sensor</Text>
+    <View>
+      <View style={styles.container}>
+        <View style={styles.textcontainer}>
+          <Text style={styles.textlabel}>Add New Sensor</Text>
+        </View>
+        <View style={styles.buttoncontainer}>
+          <TouchableOpacity
+            onPress={openModal}
+          >
+            <MaterialCommunityIcons
+              name="plus-circle"
+              color={"#61B522"}
+              size={45}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
-      <View style={styles.buttoncontainer}>
-        <TouchableOpacity onPress={() => {
-                AddNewSensor()
-              }}>
-          <MaterialCommunityIcons
-            name="plus-circle"
-            color={"#61B522"}
-            size={45}
-          />
-        </TouchableOpacity>
+      <View>
+        <AddModal
+          showModal={showModal}
+          setShowModal={setShowModal}
+        />
       </View>
     </View>
   );
@@ -58,17 +69,17 @@ const styles = StyleSheet.create({
     width: "67.5%",
 
     marginLeft: "2.5%",
-    justifyContent : 'center',
+    justifyContent: "center",
   },
   buttoncontainer: {
     width: "27.5%",
     marginLeft: "2.5%",
-    justifyContent: 'center',
-    alignItems : 'center'
+    justifyContent: "center",
+    alignItems: "center",
   },
-  textlabel : {
-    fontSize : 26,
-    marginLeft : '5%',
-    color : '#0D8735'
+  textlabel: {
+    fontSize: 26,
+    marginLeft: "5%",
+    color: "#0D8735",
   },
 });
