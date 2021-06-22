@@ -65,7 +65,7 @@ const Monitor = (props) => {
   };
 
   const changeSensorReading = () => {
-    return <Readings {...sensorData[0]} />;
+    return <Readings {...sensorData[0]} monitor={true} />;
   };
 
   return <View style={styles.container}>{changeSensorReading()}</View>;
