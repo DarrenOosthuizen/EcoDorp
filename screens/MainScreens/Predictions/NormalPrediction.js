@@ -353,6 +353,7 @@ const styles = StyleSheet.create({
     marginRight: "2.5%",
     marginTop: "5%",
     marginBottom: "2%",
+    borderRadius : 10
   },
   heading: {
     fontSize: 20,
