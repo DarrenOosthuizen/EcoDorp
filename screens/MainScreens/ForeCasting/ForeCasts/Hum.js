@@ -65,7 +65,6 @@ const ForeCast = (props) => {
               let timestr = senObj.forecasts[y].time;
               let t = timestr.search("T");
               let timealone = timestr.substr(t + 1, 5);
-              console.log(timealone)
               forecasthead.push(timealone);
             }
           }
