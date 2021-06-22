@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, StatusBar} from "react-native";
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 import {
   useTheme,
@@ -16,6 +16,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Icon from "react-native-vector-icons/Ionicons";
 import { AuthContext } from "../../components/context";
+import { Host } from "../env";
 
 import IconF5 from "react-native-vector-icons/FontAwesome5";
 
@@ -30,8 +31,7 @@ export const DrawerContent = (props) => {
   var userToken;
 
   useEffect(() => {
-    getUserData()
-
+    getUserData();
   }, []);
 
   async function getUserData() {
@@ -39,7 +39,7 @@ export const DrawerContent = (props) => {
       userToken = await AsyncStorage.getItem("userToken");
     } catch (e) {}
 
-    let result = await fetch("http://flystudio.co.za:5000/user", {
+    let result = await fetch(Host + "/user", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -48,6 +48,14 @@ export const DrawerContent = (props) => {
       },
     });
     result = await result.json();
+    if (
+      result.message == "Token blacklisted. Please log in again" ||
+      result.message == "Invalid token. Please log in again."
+    ) {
+      signOut();
+      alert("Credentials Expired. Please Login again!");
+    }
+
     setUserData({
       ...userData,
       emailaddress: result.email,
@@ -56,17 +64,16 @@ export const DrawerContent = (props) => {
     });
   }
 
-  setInterval(getUserData,60000);
-
   const { signOut, toggleTheme } = React.useContext(AuthContext);
   const paperTheme = useTheme();
   return (
     <View style={{ flex: 1 }}>
+      <StatusBar backgroundColor="#0D8735" barStyle="light-content" />
       <DrawerContentScrollView {...props}>
         <View style={styles.drawerContent}>
           <View style={styles.userInfoSection}>
             <View style={{ flexDirection: "row", marginTop: 15 }}>
-              <IconF5 name="user" solid color="#339966" size={50} />
+              <IconF5 name="user" solid color="#0D8735" size={50} />
               <View style={{ marginLeft: 15, flexDirection: "column" }}>
                 <Title style={styles.title}>{userData.name}</Title>
                 <Caption style={styles.caption}>
@@ -114,7 +121,7 @@ export const DrawerContent = (props) => {
               icon={({ color, size }) => (
                 <Icon name="cloud-outline" color={color} size={size} />
               )}
-              label="Fore Casting"
+              label="Forecasting"
               onPress={() => {
                 props.navigation.navigate("ForeCasting");
               }}

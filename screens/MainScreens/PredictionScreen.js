@@ -1,69 +1,108 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Button, StyleSheet, ScrollView } from "react-native";
-import NormalPrediction from "./Predictions/NormalPrediction";
+import {
+  View,
+  Text,
+  Button,
+  StyleSheet,
+  ScrollView,
+  Image,
+} from "react-native";
+import BottomNav from "./Predictions/BottomNavigator";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Host } from "../env";
+import RobotImage from "../../assets/Robot.png";
 
 const PredictionScreen = (props) => {
-  var values = [{}];
+  const [shouldRender, setShouldRender] = useState(false);
+  useEffect(() => {
+    getUserData();
+  }, []);
 
-  const setValue = () => {
-    values = [
-      {
-        key: 1,
-        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vel erat et lectus porttitor faucibus. Praesent nec ante ante. Nunc sed dui at justo pretium tincidunt eu non mi. Nunc.",
-        heading: "Heading 1",
+  async function getUserData() {
+    try {
+      userToken = await AsyncStorage.getItem("userToken");
+    } catch (e) {}
+
+    let result = await fetch(Host + "/sensors", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: userToken,
       },
-      {
-        key: 2,
-        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vel erat et lectus porttitor faucibus. Praesent nec ante ante. Nunc sed dui at justo pretium tincidunt eu non mi. Nunc.",
-        heading: "Heading 2",
-      },
-      {
-        key: 3,
-        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vel erat et lectus porttitor faucibus. Praesent nec ante ante. Nunc sed dui at justo pretium tincidunt eu non mi. Nunc.",
-        heading: "Heading 3",
-      },
-      {
-        key: 4,
-        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vel erat et lectus porttitor faucibus. Praesent nec ante ante. Nunc sed dui at justo pretium tincidunt eu non mi. Nunc.",
-        heading: "Heading 4",
-      },
-      {
-        key: 5,
-        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vel erat et lectus porttitor faucibus. Praesent nec ante ante. Nunc sed dui at justo pretium tincidunt eu non mi. Nunc.",
-        heading: "Heading 5",
-      },
-      {
-        key: 6,
-        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vel erat et lectus porttitor faucibus. Praesent nec ante ante. Nunc sed dui at justo pretium tincidunt eu non mi. Nunc.",
-        heading: "Heading 6",
-      },
-    ];
-  };
-  setValue();
-  return (
-    <ScrollView>
-      <View style={styles.container}>
-        {values.map((prediction) => (
-          <NormalPrediction
-            key={prediction.key}
-            text={prediction.text}
-            heading={prediction.heading}
-          />
-        ))}
-      </View>
-    </ScrollView>
-  );
+    });
+    result = await result.json();
+    if (result.length == 0) {
+      setShouldRender(false);
+    } else {
+      setShouldRender(true);
+    }
+  }
+
+  function RenderDisplay() {
+    if (shouldRender == false) {
+      return (
+        <View style={styles.cont}>
+          <Text style={styles.texthead}>OOPS</Text>
+          <Text style={styles.textsubhead}>SENSOR NOT DETECTED</Text>
+          <Image source={RobotImage} />
+          <Text style={styles.textlabel}>
+            LOOKS LIKE YOU DONT HAVE ANY SENSORS
+          </Text>
+          <Text style={styles.textpar}>
+            Please add Sensor under Manage Devices Tab
+          </Text>
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.container}>
+          <BottomNav />
+        </View>
+      );
+    }
+  }
+
+  return <View>{RenderDisplay()}</View>;
 };
 
 export default PredictionScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: "center",
-    //justifyContent: "center",
+    width: "100%",
+    height: "100%",
   },
-  items: {
-    backgroundColor: "rgb(240,201,201)",
+  cont: {
+    height: "100%",
+    width: "100%",
+    textAlign: "center",
+    backgroundColor: "#fff",
+    justifyContent: "center",
+  },
+  texthead: {
+    fontSize: 70,
+    fontWeight: "bold",
+    alignSelf: "center",
+    color: "#0D8735",
+  },
+  textsubhead: {
+    fontSize: 25,
+    fontWeight: "bold",
+    alignSelf: "center",
+    color: "#3A4234",
+  },
+  textpar: {
+    fontSize: 15,
+    alignSelf: "center",
+    position: "absolute",
+    bottom: 10,
+    color: "#0D8735",
+  },
+  textlabel: {
+    fontSize: 17,
+    alignSelf: "center",
+    fontWeight: "bold",
+    color: "#61B522",
   },
 });

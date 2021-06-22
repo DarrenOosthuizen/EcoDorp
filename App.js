@@ -1,6 +1,7 @@
 import "react-native-gesture-handler";
+
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   NavigationContainer,
   DarkTheme,
@@ -17,11 +18,13 @@ import RootStackScreen from "./screens/AuthenticationScreens/RootStackScreen";
 import { HomeStackScreen } from "./screens/DrawerComponents/DrawerComponents";
 import { DrawerContent } from "./screens/DrawerComponents/DrawerContent";
 import { AuthContext } from "./components/context";
+import { Host } from "./screens/env";
 
 const Drawer = createDrawerNavigator();
 
 const App = () => {
   const [isDarkTheme, setIsDarkTheme] = React.useState(false);
+  const [isValidUser, setisValidUser] = React.useState(false);
 
   const readThemeData = async () => {
     try {
@@ -111,6 +114,7 @@ const App = () => {
       signIn: async (userName, logintoken) => {
         try {
           await AsyncStorage.setItem("userToken", logintoken);
+          GetUserData();
         } catch (e) {
           console.log(e);
         }
@@ -138,17 +142,51 @@ const App = () => {
   );
 
   useEffect(() => {
-    setTimeout(async () => {
+    GetUserData();
+  }, []);
+
+  const GetUserData = async function () {
+    try {
       let userToken;
       userToken = null;
+      
       try {
         userToken = await AsyncStorage.getItem("userToken");
+        if (userToken != null) {
+          try {
+            let result = await fetch(Host + "/user", {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                Authorization: userToken,
+              },
+            });
+            
+            result = await result.json();
+            if (
+              result.message == "Token blacklisted. Please log in again" ||
+              result.message == "Invalid token. Please log in again." ||
+              result.message == "User not found"
+            ) {
+              await AsyncStorage.removeItem("userToken");
+              alert("Credentials Expired. Please Login again!");
+              setisValidUser(false);
+            } else {
+              setisValidUser(true);
+            }
+          } catch (e) {
+            console.log(e);
+          }
+        }
       } catch (e) {
         console.log(e);
       }
       dispatch({ type: "RETRIEVE_TOKEN", token: userToken });
-    }, 1000);
-  }, []);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   if (loginState.isLoading) {
     return (
@@ -157,19 +195,25 @@ const App = () => {
       </View>
     );
   }
+
+  function CheckValidAuthToken() {
+    if (loginState.userToken != null && isValidUser == true) {
+      return (
+        <Drawer.Navigator
+          drawerContent={(props) => <DrawerContent {...props} />}
+        >
+          <Drawer.Screen name="Home" component={HomeStackScreen} />
+        </Drawer.Navigator>
+      );
+    } else if (loginState.userToken == null || isValidUser == false) {
+      return <RootStackScreen />;
+    }
+  }
   return (
     <PaperProvider theme={theme}>
       <AuthContext.Provider value={authContext}>
         <NavigationContainer theme={theme}>
-          {loginState.userToken != null ? (
-            <Drawer.Navigator
-              drawerContent={(props) => <DrawerContent {...props} />}
-            >
-              <Drawer.Screen name="Home" component={HomeStackScreen} />
-            </Drawer.Navigator>
-          ) : (
-            <RootStackScreen />
-          )}
+          {CheckValidAuthToken()}
         </NavigationContainer>
       </AuthContext.Provider>
     </PaperProvider>

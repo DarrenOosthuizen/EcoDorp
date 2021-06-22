@@ -14,13 +14,13 @@ import * as Animatable from "react-native-animatable";
 import { LinearGradient } from "expo-linear-gradient";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Feather from "react-native-vector-icons/Feather";
-
 import { useTheme } from "react-native-paper";
 import { AuthContext } from "../../components/context";
-
+import { Host } from "../env";
 const LoginScreen = ({ route, navigation }) => {
-  let FirstTextInput ;
-  let SecondTextInput ;
+
+  let FirstTextInput;
+  let SecondTextInput;
   const [data, setData] = React.useState({
     emailaddress: "",
     password: "",
@@ -53,7 +53,6 @@ const LoginScreen = ({ route, navigation }) => {
           emailaddress: val,
           check_textInputChange: false,
           isValidEmail: false,
-
         });
       } else {
         setData({
@@ -61,7 +60,6 @@ const LoginScreen = ({ route, navigation }) => {
           emailaddress: val,
           check_textInputChange: true,
           isValidEmail: true,
-
         });
       }
     }
@@ -75,8 +73,6 @@ const LoginScreen = ({ route, navigation }) => {
       });
     }
   };
-
-
 
   const handlePasswordChange = (val) => {
     if (val.trim().length >= 8) {
@@ -108,13 +104,11 @@ const LoginScreen = ({ route, navigation }) => {
     });
   };
 
-
-
   async function login() {
     let email = data.emailaddress;
     let password = data.password;
     let item = { email, password };
-    let result = await fetch("http://flystudio.co.za:5000/auth/login", {
+    let result = await fetch(Host + "/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -123,17 +117,18 @@ const LoginScreen = ({ route, navigation }) => {
       body: JSON.stringify(item),
     });
     result = await result.json();
-    if (result.message == "Email or password does not match" && result.token == null)
-     {
+    if (
+      (result.message == "Email or password does not match" || result.message == "User not found") &&
+      result.token == null
+    ) {
       setData({
         ...data,
         emailaddress: "",
         password: "",
         isValidEmail: true,
-        isValidPassword: true
-
+        isValidPassword: true,
       });
-      
+
       Alert.alert(
         "Invalid Login",
         "Email or Password Incorrect!!",
@@ -198,7 +193,9 @@ const LoginScreen = ({ route, navigation }) => {
             autoCapitalize="none"
             onChangeText={(val) => handleEmailChange(val)}
             value={data.emailaddress}
-            ref={(input) => {FirstTextInput = input}}
+            ref={(input) => {
+              FirstTextInput = input;
+            }}
             onSubmitEditing={() => SecondTextInput.focus()}
             blurOnSubmit={false}
           />
@@ -210,9 +207,7 @@ const LoginScreen = ({ route, navigation }) => {
         </View>
         {data.isValidEmail ? null : (
           <Animatable.View animation="fadeInLeft" duration={500}>
-            <Text style={styles.errorMsg}>
-              Invalid Email Address
-            </Text>
+            <Text style={styles.errorMsg}>Invalid Email Address</Text>
           </Animatable.View>
         )}
 
@@ -242,7 +237,9 @@ const LoginScreen = ({ route, navigation }) => {
             autoCapitalize="none"
             onChangeText={(val) => handlePasswordChange(val)}
             value={data.password}
-            ref={(input) => {SecondTextInput = input}}
+            ref={(input) => {
+              SecondTextInput = input;
+            }}
           />
           <TouchableOpacity onPress={updateSecureTextEntry}>
             {data.secureTextEntry ? (

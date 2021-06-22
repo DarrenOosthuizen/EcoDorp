@@ -1,21 +1,22 @@
 import React from "react";
 import { View, Text, Button, StyleSheet, Dimensions } from "react-native";
-import { BarChart } from "react-native-chart-kit";
+import { LineChart } from "react-native-chart-kit";
 
-const BarLineChart = (props) => {
+const LineChartDiagram = (props) => {
   const label = [];
   props.labelheading.forEach((element) => {
     label.push(element);
   });
-
   const datas = [];
   props.datavalue.forEach((element) => {
     datas.push(element);
+
   });
 
   return (
     <View>
-      <BarChart
+      <Text>Line Chart View</Text>
+      <LineChart
         data={{
           labels: label,
           datasets: [
@@ -24,13 +25,14 @@ const BarLineChart = (props) => {
             },
           ],
         }}
-        width={Dimensions.get("window").width * (datas.length/7)} // from react-native
+        width={Dimensions.get("window").width * (datas.length/4)} // from react-native
         height={220}
         chartConfig={{
-          backgroundGradientFrom: "#0D8735",
-          backgroundGradientTo: "#0D8735",
+          backgroundColor: "#e26a00",
+          backgroundGradientFrom: "#339966",
+          backgroundGradientTo: "#339966",
           decimalPlaces: 2, // optional, defaults to 2dp
-          color: (opacity = 1) => `rgba(255,255,255, ${opacity})`,
+          color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
           style: {
             borderRadius: 16,
           },
@@ -44,4 +46,4 @@ const BarLineChart = (props) => {
   );
 };
 
-export default BarLineChart;
+export default LineChartDiagram;

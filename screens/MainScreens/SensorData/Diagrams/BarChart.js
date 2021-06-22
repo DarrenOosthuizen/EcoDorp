@@ -24,7 +24,7 @@ const BarLineChart = (props) => {
             },
           ],
         }}
-        width={Dimensions.get("window").width * (datas.length/7)} // from react-native
+        width={Dimensions.get("window").width * (datas.length/3.5)} // from react-native
         height={220}
         chartConfig={{
           backgroundGradientFrom: "#0D8735",

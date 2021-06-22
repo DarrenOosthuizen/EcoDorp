@@ -18,7 +18,7 @@ const SplashScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor="#61B522" barStyle="light-content" />
+      <StatusBar backgroundColor="#0D8735" barStyle="light-content" />
       <View style={styles.header} backgroundColor="#FFFF">
         <Animatable.Image
           animation="pulse"

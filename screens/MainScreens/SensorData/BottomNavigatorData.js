@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import NewForecast from "./ForeCasts/ForeCast";
+import SensorData from "./SensorData/SensorData";
+import SensorView from "./DataSlider";
 import {
   View,
   Text,
@@ -17,24 +18,24 @@ import { Host } from "../../env";
 
 const Tab = createMaterialTopTabNavigator();
 
-function ForeCastTab() {
-  const [sensorCount, setSensorCount] = useState(1);
+function SensorDataTab() {
   var userToken;
   var res = [];
   var nam = [];
+
+  const [sensorCount, setSensorCount] = useState(1);
 
   const [sensorItems, setSensorItems] = useState([
     { label: "Default", value: 0 },
   ]);
 
   useEffect(() => {
-    GetSensorForeCast();
+    GetSensorData();
   }, []);
 
-  const GetSensorForeCast = async function () {
+  const GetSensorData = async function () {
     try {
       //Setting var to null
-      console.log("starting");
       nam = [];
 
       //Getting UserToken to be able to make requests to API
@@ -51,7 +52,6 @@ function ForeCastTab() {
       });
       res = await res.json();
 
-      //Setting Drop Down List
       let value = 0;
       res.forEach((element) => {
         //Populating array with Sensors ID
@@ -64,12 +64,11 @@ function ForeCastTab() {
         setSensorItems(nam);
         value++;
       });
-      if(value>3)
-      {
-        setSensorCount(3)
-      }else
-      {
-        setSensorCount(value)
+      console.log(value);
+      if (value > 3) {
+        setSensorCount(3);
+      } else {
+        setSensorCount(value);
       }
     } catch (e) {
       console.log(e);
@@ -104,7 +103,7 @@ function ForeCastTab() {
         <Tab.Screen
           key={element.value}
           name={element.label}
-          children={() => <NewForecast sensorID={element.value} />}
+          children={() => <SensorView sensorID={element.value} />}
           options={{
             tabBarLabel: element.label,
             tabBarIcon: () => (
@@ -121,7 +120,7 @@ function ForeCastTab() {
   );
 }
 
-export default ForeCastTab;
+export default SensorDataTab;
 
 const styles = StyleSheet.create({
   TabCon: {},

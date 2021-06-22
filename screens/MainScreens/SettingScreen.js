@@ -36,7 +36,7 @@ const SettingScreen = () => {
             </View>
             <TouchableOpacity
               onPress={() => {
-                alert("wdawd");
+                alert("Settings");
               }}
               style={styles.SettingItemNavIconCon}
             >
@@ -58,7 +58,7 @@ const SettingScreen = () => {
             </View>
             <TouchableOpacity
               onPress={() => {
-                alert("wdawd");
+                alert("Settings");
               }}
               style={styles.SettingItemNavIconCon}
             >
@@ -80,7 +80,7 @@ const SettingScreen = () => {
             </View>
             <TouchableOpacity
               onPress={() => {
-                alert("wdawd");
+                alert("Settings");
               }}
               style={styles.SettingItemNavIconCon}
             >
@@ -103,7 +103,7 @@ const SettingScreen = () => {
             </View>
             <TouchableOpacity
               onPress={() => {
-                alert("wdawd");
+                alert("Settings");
               }}
               style={styles.SettingItemNavIconCon}
             >
@@ -128,7 +128,7 @@ const SettingScreen = () => {
             </View>
             <TouchableOpacity
               onPress={() => {
-                alert("wdawd");
+                alert("Settings");
               }}
               style={styles.SettingItemNavIconCon}
             >
@@ -151,7 +151,7 @@ const SettingScreen = () => {
             </View>
             <TouchableOpacity
               onPress={() => {
-                alert("wdawd");
+                alert("Settings");
               }}
               style={styles.SettingItemNavIconCon}
             >
@@ -173,7 +173,7 @@ const SettingScreen = () => {
             </View>
             <TouchableOpacity
               onPress={() => {
-                alert("wdawd");
+                alert("Settings");
               }}
               style={styles.SettingItemNavIconCon}
             >
@@ -196,7 +196,7 @@ const SettingScreen = () => {
             </View>
             <TouchableOpacity
               onPress={() => {
-                alert("wdawd");
+                alert("Settings");
               }}
               style={styles.SettingItemNavIconCon}
             >
@@ -219,7 +219,7 @@ const SettingScreen = () => {
             </View>
             <TouchableOpacity
               onPress={() => {
-                alert("wdawd");
+                alert("Settings");
               }}
               style={styles.SettingItemNavIconCon}
             >

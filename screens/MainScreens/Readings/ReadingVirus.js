@@ -2,6 +2,10 @@ import React from "react";
 import { View, Text, Button, StyleSheet } from "react-native";
 
 const ReadingVirus = (props) => {
+
+  const ChangeValue = (value) => {
+    return value.toFixed(1);
+  };
   const GetVirus = (virus) =>
   {
     if(virus<=4)

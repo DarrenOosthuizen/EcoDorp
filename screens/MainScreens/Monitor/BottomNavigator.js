@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import NewForecast from "./ForeCasts/ForeCast";
+import Monitor from "./Monitor";
 import {
   View,
   Text,
@@ -18,13 +18,14 @@ import { Host } from "../../env";
 const Tab = createMaterialTopTabNavigator();
 
 function ForeCastTab() {
-  const [sensorCount, setSensorCount] = useState(1);
   var userToken;
   var res = [];
   var nam = [];
 
+  const [sensorCount, setSensorCount] = useState(1);
+
   const [sensorItems, setSensorItems] = useState([
-    { label: "Default", value: 0 },
+    { label: "Default", value: 1 },
   ]);
 
   useEffect(() => {
@@ -34,7 +35,6 @@ function ForeCastTab() {
   const GetSensorForeCast = async function () {
     try {
       //Setting var to null
-      console.log("starting");
       nam = [];
 
       //Getting UserToken to be able to make requests to API
@@ -64,12 +64,10 @@ function ForeCastTab() {
         setSensorItems(nam);
         value++;
       });
-      if(value>3)
-      {
-        setSensorCount(3)
-      }else
-      {
-        setSensorCount(value)
+      if (value > 3) {
+        setSensorCount(3);
+      } else {
+        setSensorCount(value);
       }
     } catch (e) {
       console.log(e);
@@ -104,7 +102,7 @@ function ForeCastTab() {
         <Tab.Screen
           key={element.value}
           name={element.label}
-          children={() => <NewForecast sensorID={element.value} />}
+          children={() => <Monitor sensorID={element.value} />}
           options={{
             tabBarLabel: element.label,
             tabBarIcon: () => (

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import NewForecast from "./ForeCasts/ForeCast";
+import Prediction from "./NormalPrediction";
 import {
   View,
   Text,
@@ -7,7 +7,7 @@ import {
   StyleSheet,
   useWindowDimensions,
   ScrollView,
-  Dimensions,
+  Dimensions
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
@@ -17,24 +17,24 @@ import { Host } from "../../env";
 
 const Tab = createMaterialTopTabNavigator();
 
-function ForeCastTab() {
-  const [sensorCount, setSensorCount] = useState(1);
+function PredictionTab() {
   var userToken;
   var res = [];
   var nam = [];
+
+  const [sensorCount, setSensorCount] = useState(1);
 
   const [sensorItems, setSensorItems] = useState([
     { label: "Default", value: 0 },
   ]);
 
   useEffect(() => {
-    GetSensorForeCast();
+    GetSensors();
   }, []);
 
-  const GetSensorForeCast = async function () {
+  const GetSensors = async function () {
     try {
       //Setting var to null
-      console.log("starting");
       nam = [];
 
       //Getting UserToken to be able to make requests to API
@@ -85,7 +85,7 @@ function ForeCastTab() {
         scrollEnabled: true,
         pressColor: "#61B522",
         tabStyle: {
-          width: Dimensions.get("window").width / sensorCount,
+          width: Dimensions.get("window").width/sensorCount,
           borderLeftWidth: 1,
           borderLeftColor: "#d7d8d8",
         },
@@ -104,7 +104,7 @@ function ForeCastTab() {
         <Tab.Screen
           key={element.value}
           name={element.label}
-          children={() => <NewForecast sensorID={element.value} />}
+          children={() => <Prediction sensorID={element.value} />}
           options={{
             tabBarLabel: element.label,
             tabBarIcon: () => (
@@ -121,7 +121,7 @@ function ForeCastTab() {
   );
 }
 
-export default ForeCastTab;
+export default PredictionTab;
 
 const styles = StyleSheet.create({
   TabCon: {},

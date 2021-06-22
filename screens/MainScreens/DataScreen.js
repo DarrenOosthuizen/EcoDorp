@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -7,126 +7,104 @@ import {
   ScrollView,
   Alert,
   StatusBar,
+  Image,
 } from "react-native";
-import BezierLineChart from "../Diagrams/BezierLineChart";
-import LineChart from "../Diagrams/LineChart";
-import BarChart from "../Diagrams/BarChart";
-import PieChart from "../Diagrams/PieChart";
+import BottomTab from "./SensorData/BottomNavigatorData";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Host } from "../env";
+import RobotImage from "../../assets/Robot.png";
 
 const DataScreen = () => {
-  const readData = async () => {
+  const [shouldRender, setShouldRender] = useState(false);
+  useEffect(() => {
+    getUserData();
+  }, []);
+
+  async function getUserData() {
     try {
-      const userToken = await AsyncStorage.getItem("userToken");
+      userToken = await AsyncStorage.getItem("userToken");
+    } catch (e) {}
 
-      alert(userToken);
-    } catch (e) {
-      alert("Failed to fetch the data from storage");
+    let result = await fetch(Host + "/sensors", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: userToken,
+      },
+    });
+    result = await result.json();
+    if (result.length == 0) {
+      setShouldRender(false);
+    } else {
+      setShouldRender(true);
     }
-  };
+  }
 
-  //readData();
-  const testobject = [
-    {
-      name: "Random Info",
-      population: 102120120,
-      color: "rgba(220,220,120,1)",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 15,
-    },
-    {
-      name: "This is why wdwdwadawdawd",
-      population: 102120120,
-      color: "rgba(180,10,120,1)",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 15,
-    },
-    {
-      name: "Helo There",
-      population: 102120120,
-      color: "rgba(220,120,120,1)",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 15,
-    },
-    {
-      name: "Corsair",
-      population: 102120120,
-      color: "rgba(120,120,320,1)",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 15,
-    },
-  ];
+  function RenderDisplay() {
+    if (shouldRender == false) {
+      return (
+        <View style={styles.cont}>
+          <Text style={styles.texthead}>OOPS</Text>
+          <Text style={styles.textsubhead}>SENSOR NOT DETECTED</Text>
+          <Image source={RobotImage} />
+          <Text style={styles.textlabel}>
+            LOOKS LIKE YOU DONT HAVE ANY SENSORS
+          </Text>
+          <Text style={styles.textpar}>
+            Please add Sensor under Manage Devices Tab
+          </Text>
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.container}>
+          <BottomTab />
+        </View>
+      );
+    }
+  }
 
-  return (
-    <ScrollView>
-      <View style={styles.container} id="test">
-        <StatusBar backgroundColor="#0D8735" barStyle="light-content" />
-        <ScrollView horizontal={true}>
-          <BezierLineChart
-            style={styles.test}
-            labelheading={[
-              "January",
-              "February",
-              "March",
-              "April",
-              "May",
-              "June",
-              "July",
-              "August",
-            ]}
-            datavalue={[10, 20, 15, 20, 30, 50, 20, 30]}
-          />
-        </ScrollView>
-        <ScrollView horizontal={true}>
-          <LineChart
-            labelheading={[
-              "January",
-              "February",
-              "March",
-              "April",
-              "May",
-              "June",
-              "July",
-              "August",
-              "September",
-              "October",
-              "November",
-              "December",
-            ]}
-            datavalue={[10, 20, 15, 20, 30, 50, 20, 30, 30, 50, 20, 30]}
-          />
-        </ScrollView>
-        <ScrollView horizontal={true}>
-          <BarChart
-            labelheading={[
-              "January",
-              "February",
-              "March",
-              "April",
-              "May",
-              "June",
-              "July",
-              "August",
-            ]}
-            datavalue={[0.2, 0.6, 0.5, 0.7, 0.2]}
-          />
-        </ScrollView>
-        <ScrollView horizontal={true}>
-          <PieChart pieobject={testobject} />
-        </ScrollView>
-      </View>
-    </ScrollView>
-  );
+  return <View>{RenderDisplay()}</View>;
 };
 
 export default DataScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: "center",
+    height: "100%",
+    width: "100%",
+  },
+  cont: {
+    height: "100%",
+    width: "100%",
+    textAlign: "center",
+    backgroundColor: "#fff",
     justifyContent: "center",
-    marginLeft: "5%",
-    marginRight: "5%",
+  },
+  texthead: {
+    fontSize: 70,
+    fontWeight: "bold",
+    alignSelf: "center",
+    color: "#0D8735",
+  },
+  textsubhead: {
+    fontSize: 25,
+    fontWeight: "bold",
+    alignSelf: "center",
+    color: "#3A4234",
+  },
+  textpar: {
+    fontSize: 15,
+    alignSelf: "center",
+    position: "absolute",
+    bottom: 10,
+    color: "#0D8735",
+  },
+  textlabel: {
+    fontSize: 17,
+    alignSelf: "center",
+    fontWeight: "bold",
+    color: "#61B522",
   },
 });

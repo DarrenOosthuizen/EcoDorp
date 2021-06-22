@@ -1,20 +1,30 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, ScrollView, Button, TouchableOpacity,ActivityIndicator,StatusBar } from "react-native";
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  Button,
+  TouchableOpacity,
+  ActivityIndicator,
+  StatusBar,
+  Text,
+} from "react-native";
 import OutdoorDevice from "./Devices/OutdoorDevice";
 import IndoorDevice from "./Devices/IndoorDevice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Host } from "../env";
+import AddSensor from "./Manage/AddSensor";
 
-
-const ManageScreen = ({navigation}) => {
+const ManageScreen = ({ navigation }) => {
+  const [shouldRender, setShouldRender] = useState(false);
   const [result, setResult] = useState([]);
   var userToken;
   var res = [];
-  var selectedData ;
-  const [loginState,SetloginState] = useState(false);
+  var selectedData;
+  const [loginState, SetloginState] = useState(false);
 
   useEffect(() => {
     GetSensorData();
-    SetloginState(true)
   }, []);
 
   const sleep = (ms) => {
@@ -31,12 +41,11 @@ const ManageScreen = ({navigation}) => {
   };
 
   const GetSensorData = async function () {
-    
     try {
       userToken = await AsyncStorage.getItem("userToken");
 
       //Getting Sensors Name Type and ID
-      res = await fetch("http://flystudio.co.za:5000/sensors", {
+      res = await fetch(Host + "/sensors", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -45,7 +54,12 @@ const ManageScreen = ({navigation}) => {
         },
       });
       res = await res.json();
-
+      if (res.length == 0) {
+        setShouldRender(false);
+        SetloginState(true);
+      } else {
+        setShouldRender(true);
+      }
       const mapLoop = async (_) => {
         const promises = res.map(async (element) => {
           const senObj = await getSensorObjects();
@@ -58,12 +72,12 @@ const ManageScreen = ({navigation}) => {
         setResult(senObj[0]);
       };
       mapLoop();
-      
+
       async function GetSensorReading(value) {
         try {
           userToken = await AsyncStorage.getItem("userToken");
           let resultsen = await fetch(
-            "http://flystudio.co.za:5000/sensors/" + value + "/data/last",
+            Host + "/sensors/" + value + "/data/last",
             {
               method: "GET",
               headers: {
@@ -76,9 +90,8 @@ const ManageScreen = ({navigation}) => {
           resultsen = await resultsen.json();
           let senReading = amountvalues(resultsen);
           return sleep(50).then((v) => senReading);
-         
         } catch (e) {
-          console.log(e)
+          console.log(e);
         }
       }
 
@@ -140,12 +153,13 @@ const ManageScreen = ({navigation}) => {
         } else {
           Reading++;
         }
+        SetloginState(true);
         return Reading;
       };
     } catch (e) {}
   };
 
-  if (loginState==false) {
+  if (loginState == false) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <ActivityIndicator size={100} color="#2DAF33" />
@@ -153,50 +167,98 @@ const ManageScreen = ({navigation}) => {
     );
   }
 
-  return (
-    <ScrollView>
-      <View style={styles.container}>
-        {result.map((sensor) =>
-          sensor.device_name == "b790" ? (
-              <OutdoorDevice
-                key={sensor.id}
-                text={sensor.device_name}
-                heading={sensor.name}
-                reading={sensor.reading}
-                object={sensor}
-              />
-          ) : (
+  function RenderDisplay() {
+    if (shouldRender == false) {
+      return (
+        <View style={{ height: "100%", width: "100%" }}>
+          <AddSensor />
+          <View style={styles.cont}>
+            <Text style={styles.texthead}>Sensors can be added above</Text>
+          </View>
+        </View>
+      );
+    } else {
+      return (
+          <View style={styles.container}>
+            <View style={styles.devicecontainer}>
+              <ScrollView>
+              {result.map((sensor) =>
+                sensor.device_name == "Buiten 1" ? (
+                  <OutdoorDevice
+                    key={sensor.id}
+                    text={sensor.device_name}
+                    heading={sensor.name}
+                    reading={sensor.reading}
+                    object={sensor}
+                  />
+                ) : (
+                  <IndoorDevice
+                    key={sensor.id}
+                    text={sensor.device_name}
+                    heading={sensor.name}
+                    reading={sensor.reading}
+                    object={sensor}
+                  />
+                )
+              )}
+              </ScrollView>
+            </View>
+            <View style={styles.addsen}>
+              <AddSensor />
+            </View>
+          </View>
+      );
+    }
+  }
 
-              <IndoorDevice
-                key={sensor.id}
-                text={sensor.device_name}
-                heading={sensor.name}
-                reading={sensor.reading}
-                object={sensor}
-              />
-          )
-        )}
-        
-      </View>
-    </ScrollView>
-  );
+  return <View>{RenderDisplay()}</View>;
 };
 
 export default ManageScreen;
 
-
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+  container : {
+    height : '100%',
+    width : '100%',
   },
-  modalcon:{
+  devicecontainer: {
+    height: "90%",
+    width : '100%', 
+  },
+  scrollcontainer : {
+    height : '100%',
+    width : '100%', 
+  },
+  modalcon: {
     backgroundColor: "#fff",
     borderRadius: 10,
   },
-  modalclose:{
+  modalclose: {
+    backgroundColor: "#2DAF33",
+  },
+  cont: {
+    height: "100%",
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  texthead: {
+    fontSize: 28,
+  },
+  textpar: {
+    fontSize: 18,
+  },
+  addsen: {
+    justifyContent : "flex-end",
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 0,
+      height: 0
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4.84,
+    elevation: 2
 
-    backgroundColor: "#2DAF33"
+
   },
 });
